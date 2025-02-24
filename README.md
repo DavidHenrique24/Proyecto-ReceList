@@ -7,7 +7,7 @@
 ## Colaborador
 
 **Yehor Fal**
-
+---
 ## Definición del Proyecto
 
 ReceList es una página web diseñada para permitir a los usuarios compartir, editar y eliminar recetas de cocina. Además, ofrece la posibilidad de explorar recetas subidas por otros usuarios. La plataforma incluye diferentes roles de usuario con distintas capacidades:
@@ -31,7 +31,7 @@ ReceList es una página web diseñada para permitir a los usuarios compartir, ed
 ### Herramientas adicionales
 
 - **GitHub**: Para el control de versiones y la colaboración en el desarrollo del código.
-
+---
 # Casos de uso para ReceList  
 
 ## 1. Registrar usuario  
