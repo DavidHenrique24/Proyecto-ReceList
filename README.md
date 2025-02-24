@@ -12,7 +12,8 @@
 
 ReceList es una página web diseñada para permitir a los usuarios compartir, editar y eliminar recetas de cocina. Además, ofrece la posibilidad de explorar recetas subidas por otros usuarios. La plataforma incluye diferentes roles de usuario con distintas capacidades:
 
-- **Visitante/No registrado**: Puede visualizar recetas sin necesidad de registrarse.
+- **No registrado**: Solo tiene la opcion de registrarse y ver la pagina principal
+- **Registrado**: Puede visualizar las recetas
 - **Usuario registrado**: Puede subir, editar y eliminar sus propias recetas.
 - **Administrador**: Puede eliminar todas las recetas, editarlas y realizar todas las acciones de un usuario registrado.
 
@@ -31,22 +32,58 @@ ReceList es una página web diseñada para permitir a los usuarios compartir, ed
 
 - **GitHub**: Para el control de versiones y la colaboración en el desarrollo del código.
 
-## Sugerencias para el Proyecto
+# Casos de uso para ReceList  
 
-### Paleta de colores propuesta
+## 1. Registrar usuario  
+- **Descripción:**  
+  Un usuario puede registrarse en la plataforma proporcionando su nombre, apellidos, email y contraseña.  
 
-### Logo
+## 2. Recuperar contraseña  
+- **Descripción:**  
+  Un usuario registrado puede solicitar la recuperación de su contraseña en caso de que la haya olvidado. Se le enviará un correo electrónico con las instrucciones para restablecer su contraseña.  
 
-Se incluirá un logo diseñado específicamente para el proyecto.
-![image](https://github.com/user-attachments/assets/477c37eb-2f26-453e-ab00-78004b430c88)
+## 3. Iniciar sesión  
+- **Descripción:**  
+  Un usuario registrado puede iniciar sesión en la plataforma proporcionando su email y contraseña.  
+
+## 4. Cerrar sesión  
+- **Descripción:**  
+  Un usuario puede cerrar su sesión en la plataforma en cualquier momento.  
+
+## 5. Editar perfil  
+- **Descripción:**  
+  Un usuario registrado puede editar su perfil, actualizando su nombre, avatar, apellidos, email o contraseña.  
+
+## 6. Ver recetas  
+- **Descripción:**  
+  Un usuario registrado puede ver un listado de recetas publicadas por los chefs/publicadores.  
+
+## 7. Publicar Receta  
+- **Descripción:**  
+  Un usuario con el perfil de Chef/Publicador puede publicar un proyecto proporcionando información como nombre, descripción, imagen representativa y la información de la receta.  
+
+## 8. Editar Receta  
+- **Descripción:**  
+  Un usuario con el perfil de Chef puede editar su receta que haya publicado previamente, actualizando la información de la receta.  
+
+## 9. Eliminar Receta  
+- **Descripción:**  
+  Un usuario con el perfil de Chef o administrador puede eliminar una receta que haya publicado previamente.  
+
+## 10. Ver/Editar usuarios  
+- **Descripción:**  
+  Un administrador puede ver una tabla con todos los usuarios registrados y editar la información, incluido el rol que tenga el usuario.  
+
+## 11. Eliminar usuario  
+- **Descripción:**  
+  Un administrador puede eliminar cualquier usuario registrado en la plataforma.  
+
+---
+## Boceto de Diagrama de Uso 
+![Diagrama de casos de uso](/public/imagenesDocu/diagramaBoce.png)
+
+## Diagrama de Uso
+![Diagrama de casos de uso](/public/imagenesDocu/diagrama.png)
 
 
-### Diseños en Figma
-
-Algunos diseños de referencia para la interfaz de usuario:
-- [Food Recipes Website UI](https://www.figma.com/design/SF3nUI5jUcFOP0Q8e5sY1v/Food-recipes-website-UI---Delícias-à-Mesa-(Community)?node-id=0-1&p=f&t=ETvI3mCd4w9kkt6D-0)
-- [Community File 1](https://www.figma.com/community/file/1160186880726418317)
-- [Community File 2](https://www.figma.com/community/file/1322334617374701314)
-
-### Ejemplos para tarjetas
 
