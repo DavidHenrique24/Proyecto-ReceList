@@ -28,16 +28,13 @@
           z-index: 1;
       }
 
-      header {
-          background-color: transparent;
-      }
 
 
             /* Fondo con imagen y oscurecimiento */
             .fondo-oscuro {
               background: url('/public/imagenesProject/comidaFondo.avif') no-repeat center center fixed;
               background-size: cover;
-              height: 100vh; /* Ocupar toda la pantalla */
+              height: 100vh;
               display: flex;
               flex-direction: column;
               justify-content: center;
@@ -71,3 +68,22 @@
           .input-control {
               background-color: rgba(255, 255, 255, 0.9);
           }
+
+          .card-img-top {
+            object-fit: cover;
+            height: 400px; 
+        }
+        .card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-10px); 
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); 
+        }
+        .icono{
+            font-size: 1rem;
+        }
+        .icono:hover{
+            color: #077bff;
+        }

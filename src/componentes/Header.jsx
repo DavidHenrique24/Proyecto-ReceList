@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 const Header = () => {
   return (
     <header className="d-flex align-items-center justify-content-between p-4 shadow position-relative" style={{ height: "150px" }}>
-      <i className="fas fa-search fs-3 text-secondary"></i>
+   <i className="bi bi-search fs-3 text-secondary"></i>
+
       
       <div className="position-absolute start-50 translate-middle-x text-center">
         <Link to="/">
