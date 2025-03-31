@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 
-const EditRece = () => {
+const nuevoRece = () => {
   return (
     <main className="container px-5">
       <div className="container d-flex justify-content-between align-items-center mt-5">
         <h1 className="m-0">Editar Receta</h1>
-        <Link to="/listRece">
+        <Link to="/receList">
           <button className="btn btn-outline-secondary">
             <i className="bi bi-arrow-bar-left" style={{ fontSize: '1em' }}></i> Volver
           </button>
@@ -56,4 +56,4 @@ const EditRece = () => {
   );
 };
 
-export default EditRece;
+export default nuevoRece;

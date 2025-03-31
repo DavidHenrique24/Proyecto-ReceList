@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const ListRece = () => {
-  const [recetas] = useState([
+  const [recetas, setRecetas] = useState([
     {
       id: 1,
       name: "Estofado",
@@ -10,6 +10,7 @@ const ListRece = () => {
       date: "13/12/2021",
       author: "Carlos",
       img: "https://media.istockphoto.com/id/599498966/es/foto/carne-de-res-guisada-con-patatas.jpg?s=612x612&w=0&k=20&c=O6pzgcP6-_gAng9rqStZgR2M0zZn-BAQiooMae9FIo4=",
+      likes: 156,
     },
     {
       id: 2,
@@ -18,6 +19,7 @@ const ListRece = () => {
       date: "14/12/2021",
       author: "Pedro",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCCha23q54YIVZKJ3huCfgAN2n1XF_UTNbqw&s",
+      likes: 98,
     },
     {
       id: 3,
@@ -26,9 +28,17 @@ const ListRece = () => {
       date: "15/12/2021",
       author: "Ana",
       img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg/800px-001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg",
+      likes: 230,
     },
-    
   ]);
+
+  const handleLike = (id) => {
+    setRecetas((prevRecetas) =>
+      prevRecetas.map((recipe) =>
+        recipe.id === id ? { ...recipe, likes: recipe.likes + 1 } : recipe
+      )
+    );
+  };
 
   return (
     <main className="container mt-5 px-1">
@@ -76,10 +86,14 @@ const ListRece = () => {
                     <p><strong>Fecha:</strong> {recipe.date}</p>
                     <p><strong>Autor:</strong> {recipe.author}</p>
                   </div>
-                  <div className="card-footer text-end">
-                    <button className="btn btn-sm icono"><i className="bi bi-pencil"></i></button>
-                    <button className="btn btn-sm ms-2 icono"><i className="bi bi-trash"></i></button>
-                    <button className="btn btn-sm ms-2 icono">0 <i className="bi bi-heart "></i></button>
+                  <div className="card-footer d-flex justify-content-between align-items-center">
+                    <button className="btn btn-sm icono" onClick={() => handleLike(recipe.id)}>
+                      {recipe.likes} <i className="bi bi-heart"></i>
+                    </button>
+                    <div>
+                      <button className="btn btn-sm icono"><i className="bi bi-pencil"></i></button>
+                      <button className="btn btn-sm ms-2 icono"><i className="bi bi-trash"></i></button>
+                    </div>
                   </div>
                 </div>
               </Link>

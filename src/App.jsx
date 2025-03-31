@@ -8,6 +8,8 @@ import EditRece from "./vistas/editRece.jsx";
 import NotFound from "./vistas/NotFound.jsx";
 import ProjectAdmin from "./vistas/ProjectAdmin.jsx";
 import UsuAdmin from "./vistas/UsuAdmin.jsx";
+import nuevoRece from "./vistas/nuevoRece.jsx";
+
 
 
 const App = () => {
@@ -21,6 +23,8 @@ const App = () => {
       <Route path="*" element={<NotFound/>} />
       <Route path="/projectAdmin" element={<ProjectAdmin />} />
       <Route path="/usuAdmin" element={<UsuAdmin />} />
+      <Route path="/editRece" element={<EditRece />} />
+      <Route path="/nuevoRece" element={<nuevoRece />} />
 
      
     </Routes>
