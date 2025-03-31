@@ -1,12 +1,16 @@
+import { Link } from "react-router-dom";
+
 const ReceDetalle = () => {
   return (
     <main className="container px-3 bg">
       <div className="container w-75">
         <div className="d-flex justify-content-between align-items-center mt-4">
+        <Link to="/listRece">
           <button className="btn btn-outline-secondary">
             <i className="bi bi-arrow-bar-left" style={{ fontSize: '1em' }}></i>
             Volver
           </button>
+        </Link>
 
           {/* Solo aparece en caso de ser chef */}
           <div className="d-flex align-items-end">

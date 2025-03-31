@@ -4,6 +4,7 @@ import Register from "./vistas/Register.jsx";
 import Login from "./vistas/Login.jsx";
 import ListRece from "./vistas/ListRece.jsx";
 import ReceDetalle from "./vistas/ReceDetalle.jsx";
+import EditRece from "./vistas/editRece.jsx";
 import NotFound from "./vistas/NotFound.jsx";
 import ProjectAdmin from "./vistas/ProjectAdmin.jsx";
 import UsuAdmin from "./vistas/UsuAdmin.jsx";

@@ -1,32 +1,32 @@
 import React, { useState } from 'react';
-
+import { Link } from 'react-router-dom';
 const ProjectAdmin= () => {
   // Simulando algunos datos de recetas
   const recetas = [
     {
       id: 1,
-      imagen: 'https://randomuser.me/api/portraits/men/1.jpg',
+      imagen: 'https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/737c83a7-c1f9-4c95-8bdc-402e3c5aa011/Derivates/b033b224-6745-4914-9c25-f7f2ead80b9f.jpg',
       titulo: 'Receta de Pastel',
       descripcion: 'Deliciosa receta para hacer un pastel de chocolate.',
       autor: 'Juan Pérez',
-      fecha: '2023-12-12',
+      created_at: '2023-12-12',
     },
     {
       id: 2,
-      imagen: 'https://randomuser.me/api/portraits/men/2.jpg',
+      imagen: 'https://imagenes.elpais.com/resizer/v2/3KWQUZHLQFGVRIWYQGO3A5WFD4.jpg?auth=f2d14d8886b49351024920c894e7f4b9f518886e962c654538d191ee37e30bac&width=1200',
       titulo: 'Ensalada César',
       descripcion: 'Receta fresca y saludable para ensalada César.',
       autor: 'Juanito estrella',
-      fecha: '2023-12-13',
+      created_at: '2023-12-13',
 
     },
     {
       id: 3,
-      imagen: 'https://image.europafm.com/clipping/cmsimages02/2023/02/23/2FD6FEED-0AC4-44A0-B698-B02B33535C80/duki_104.jpg?crop=720,720,x341,y0&width=1200&height=1200&optimize=low&format=webply',
+      imagen: 'https://img.hellofresh.com/w_3840,q_auto,f_auto,c_fill,fl_lossy/hellofresh_website/es/cms/SEO/recipes/albondigas-caseras-de-cerdo-con-salsa-barbacoa.jpeg',
       titulo: 'Cesar enasalada',
       descripcion: 'Receta fresca y saludable para ensalada César.',
       autor: 'Duki',
-      fecha: '2023-12-13',
+      created_at: '2023-12-13',
 
     },
     
@@ -43,10 +43,10 @@ const ProjectAdmin= () => {
           <div className="col-12">
             <ul className="nav nav-tabs">
               <li className="nav-item w-50">
-                <Link className="nav-link" to="/receAdmin">Recetas</Link>
+                <Link className="nav-link active" to="/projectAdmin">Recetas</Link>
               </li>
               <li className="nav-item w-50">
-                <Link className="nav-link active" to="/usuAdmin">Usuarios</Link>
+                <Link className="nav-link " to="/usuAdmin">Usuarios</Link>
               </li>
             </ul>
           </div>
@@ -79,7 +79,7 @@ const ProjectAdmin= () => {
                   <th>Título</th>
                   <th>Descripción</th>
                   <th>Autor</th>
-                  <th>Fecha</th>
+                  <th>created_at</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -113,13 +113,10 @@ const ProjectAdmin= () => {
                       />
                     </td>
                     <td>
-                      <select className="form-control form-control-sm">
-                        <option value="1">Juan Pérez</option>
-                        <option value="2">María García</option>
-                      </select>
+                      <span className="form-control form-control-sm" readOnly>{receta.autor}</span>
                     </td>
                     <td>
-                      <input type="date" className="form-control form-control-sm" value={receta.fecha} />
+                      <input type="date" className="form-control form-control-sm" value={receta.created_at} />
                     </td>
                     <td>
                       <button className="btn btn-sm btn-success">Editar</button>

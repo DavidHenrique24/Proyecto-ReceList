@@ -1,59 +1,94 @@
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
-const EditRece = () => {
+const ListRece = () => {
+  const [recetas] = useState([
+    {
+      id: 1,
+      name: "Estofado",
+      description: "Estofado sabroso con ingredientes variados.",
+      date: "13/12/2021",
+      author: "Carlos",
+      img: "https://media.istockphoto.com/id/599498966/es/foto/carne-de-res-guisada-con-patatas.jpg?s=612x612&w=0&k=20&c=O6pzgcP6-_gAng9rqStZgR2M0zZn-BAQiooMae9FIo4=",
+    },
+    {
+      id: 2,
+      name: "Pollo Abrasa",
+      description: "Delicioso pollo, bastante rico.",
+      date: "14/12/2021",
+      author: "Pedro",
+      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCCha23q54YIVZKJ3huCfgAN2n1XF_UTNbqw&s",
+    },
+    {
+      id: 3,
+      name: "Tacos",
+      description: "Tacos mexicanos con carne asada y guacamole.",
+      date: "15/12/2021",
+      author: "Ana",
+      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg/800px-001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg",
+    },
+    
+  ]);
+
   return (
-    <main className="container px-5">
-      <div className="container d-flex justify-content-between align-items-center mt-5">
-        <h1 className="m-0">Editar Receta</h1>
-        <Link to="/recetas">
-          <button className="btn btn-outline-secondary">
-            <i className="bi bi-arrow-bar-left" style={{ fontSize: '1em' }}></i> Volver
-          </button>
-        </Link>
+    <main className="container mt-5 px-1">
+      <h1 className="text-center">Recetas</h1>
+
+      {/* Pestañas */}
+      <div className="row mt-4">
+        <div className="col-12">
+          <ul className="nav nav-tabs">
+            <li className="nav-item w-50">
+              <a className="nav-link active" href="#">Todas Las Recetas</a>
+            </li>
+            <li className="nav-item w-50">
+              <a className="nav-link" href="#">Mis Recetas</a>
+            </li>
+          </ul>
+        </div>
       </div>
-      <br/>
 
-      <form action="" className="form border shadow-sm p-3" noValidate>
-        <div className="row mt-2">
-          <div className="col-12">
-            <img
-              src="https://www.bbva.com/wp-content/uploads/2023/04/cocina-de-aprovechamiento.jpg"
-              alt="Imagen de la receta"
-              className="img-fluid mb-3"
-            />
-            <label className="form-label mt-2" htmlFor="urlImagen"><strong>URL Imagen: </strong></label>
-            <input id="urlImagen" type="text" className="form-control" value="http://enlaceImagen.com" required />
-            <div className="invalid-feedback">Por favor, ingresa una URL válida.</div>
+      {/* Contenedor de búsqueda y botón */}
+      <div className="border border-top-0 p-3">
+        <div className="row">
+          <div className="col-12 col-sm-4 mb-3">
+            <button className="btn btn-primary w-100">Subir receta</button>
           </div>
-
-          <div className="col-12">
-            <label className="form-label mt-2" htmlFor="nombre"><strong>Nombre de la Receta: </strong></label>
-            <input required id="nombre" type="text" value="Nombre Receta" className="form-control" />
-            <div className="invalid-feedback">El nombre es obligatorio.</div>
-
-            <label className="form-label mt-2" htmlFor="descripcion"><strong>Descripción: </strong></label>
-            <textarea id="descripcion" className="form-control" rows="4" required>Breve descripción de la receta.</textarea>
-            <div className="invalid-feedback">La descripción es obligatoria.</div>
-
-            <label className="form-label mt-2" htmlFor="ingredientes"><strong>Ingredientes: </strong></label>
-            <textarea id="ingredientes" className="form-control" rows="4" required>Lista de ingredientes necesarios.</textarea>
-            <div className="invalid-feedback">Los ingredientes son obligatorios.</div>
-
-            <label className="form-label mt-2" htmlFor="preparacion"><strong>Preparación: </strong></label>
-            <textarea id="preparacion" className="form-control" rows="6" required>Pasos para preparar la receta.</textarea>
-            <div className="invalid-feedback">La preparación es obligatoria.</div>
-
-            <label className="form-label mt-2" htmlFor="fecha"><strong>Fecha de Creación: </strong></label>
-            <input id="fecha" type="date" className="form-control" required />
-            <div className="invalid-feedback">Por favor, selecciona una fecha.</div>
-
-            <input type="submit" className="btn btn-success mt-3" value="Guardar Cambios" />
-            <input type="submit" className="btn btn-outline-secondary mt-3" value="Cancelar" />
+          <div className="d-flex col-12 col-sm-8 mb-3">
+            <div className="input-group flex-nowrap">
+              <span className="input-group-text"><i className="bi bi-search"></i></span>
+              <input type="text" className="form-control" placeholder="Buscar receta" />
+              <span className="input-group-text"><i className="bi bi-x"></i></span>
+            </div>
           </div>
         </div>
-      </form>
+
+        {/* Tarjetas de recetas */}
+        <div className="row mt-3">
+          {recetas.map((recipe) => (
+            <div key={recipe.id} className="col-12 col-md-6 col-lg-4 mb-3">
+              <Link to={`/receDetalle/${recipe.id}`} className="text-decoration-none text-dark">
+                <div className="card h-100">
+                  <img src={recipe.img} className="card-img-top" alt={recipe.name} />
+                  <div className="card-body">
+                    <h5 className="card-title">{recipe.name}</h5>
+                    <p className="card-text">{recipe.description}</p>
+                    <p><strong>Fecha:</strong> {recipe.date}</p>
+                    <p><strong>Autor:</strong> {recipe.author}</p>
+                  </div>
+                  <div className="card-footer text-end">
+                    <button className="btn btn-sm icono"><i className="bi bi-pencil"></i></button>
+                    <button className="btn btn-sm ms-2 icono"><i className="bi bi-trash"></i></button>
+                    <button className="btn btn-sm ms-2 icono">0 <i className="bi bi-heart "></i></button>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
     </main>
   );
 };
 
-export default EditRece;
+export default ListRece;
