@@ -66,7 +66,7 @@ const UsuAdmin = () => {
                   <tr key={indice}>
                     <td>
                       <div className="containerImagen">
-                        <div className="rounded-circle d-flex align-items-end justify-content-end" style={{ backgroundImage: `url(${usuario.imagen})`, width: '50px', height: '50px', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                        <div className="d-flex align-items-end justify-content-end" style={{ backgroundImage: `url(${usuario.imagen})`, width: '70px', height: '70px', backgroundSize: 'cover', backgroundPosition: 'center' }}>
                           <i className="btn btn-success btn-sm rounded-circle bi bi-pencil" style={{ fontSize: '10px' }}></i>
                         </div>
                       </div>

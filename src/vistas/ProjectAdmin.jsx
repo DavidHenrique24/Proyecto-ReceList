@@ -52,24 +52,6 @@ const ProjectAdmin= () => {
           </div>
         </div>
 
-          {/* Buscador */}
-          <div className="row">
-            <div className="d-flex col-12 col-md-6 mb-3">
-              <div className="input-group flex-nowrap">
-                <span className="input-group-text" id="addon-wrapping">
-                  <i className="bi bi-search"></i>
-                </span>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Buscar receta"
-                  aria-label="Buscador"
-                  aria-describedby="addon-wrapping"
-                />
-              </div>
-            </div>
-          </div>
-
           {/* Tabla de recetas */}
           <div className="col-12" style={{ overflowX: 'auto' }}>
             <table className="table table-hover align-middle mt-3" style={{ minWidth: '1200px' }}>
