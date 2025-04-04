@@ -9,7 +9,12 @@ const EditPerfil = ({ showModal, setShowModal }) => {
           <div className="modal-backdrop fade show"></div>
 
           {/* Modal */}
-          <div className="modal fade show d-block" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div
+            className="modal fade show d-block"
+            tabIndex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
             <form>
               <div className="modal-dialog modal-lg">
                 <div className="modal-content">
@@ -25,12 +30,14 @@ const EditPerfil = ({ showModal, setShowModal }) => {
                   </div>
                   <div className="modal-body p-4">
                     <div className="form border shadow-sm p-4 rounded-3">
-                      <div className="row mb-4">
-                        <div className="col-md-4 text-center">
+                      <div className="row g-4">
+                        {/* Imagen */}
+                        <div className="col-12 col-lg-4 text-center">
                           <div
                             className="rounded-circle mx-auto mb-3"
                             style={{
-                              backgroundImage: 'url(https://i.pinimg.com/736x/68/e1/bd/68e1bdeb37a23ce848f5ec2bf280d68e.jpg)',
+                              backgroundImage:
+                                "url(https://i.pinimg.com/736x/68/e1/bd/68e1bdeb37a23ce848f5ec2bf280d68e.jpg)",
                               width: "200px",
                               height: "200px",
                               backgroundSize: "cover",
@@ -40,36 +47,67 @@ const EditPerfil = ({ showModal, setShowModal }) => {
                           <label htmlFor="imagen" className="form-label">
                             URL imagen
                           </label>
-                          <input id="imagen" type="url" className="form-control" />
+                          <input
+                            id="imagen"
+                            type="url"
+                            className="form-control"
+                          />
                         </div>
-                        <div className="col-md-8">
-                          <div className="mb-3">
-                            <label htmlFor="nombre" className="form-label">
-                              Nombre
-                            </label>
-                            <input required id="nombre" type="text" className="form-control" />
-                          </div>
-                          <div className="mb-3">
-                            <label htmlFor="email" className="form-label">
-                              Email
-                            </label>
-                            <input required id="email" type="email" className="form-control" />
-                          </div>
-                          <div className="mb-3">
-                            <label htmlFor="pass" className="form-label">
-                              Contraseña
-                            </label>
-                            <input required id="pass" type="password" className="form-control" />
+
+                        {/* Inputs */}
+                        <div className="col-12 col-lg-8">
+                          <div className="d-flex flex-column gap-3">
+                            <div>
+                              <label htmlFor="nombre" className="form-label">
+                                Nombre
+                              </label>
+                              <input
+                                required
+                                id="nombre"
+                                type="text"
+                                className="form-control"
+                              />
+                            </div>
+                            <div>
+                              <label htmlFor="email" className="form-label">
+                                Email
+                              </label>
+                              <input
+                                required
+                                id="email"
+                                type="email"
+                                className="form-control"
+                              />
+                            </div>
+                            <div>
+                              <label htmlFor="pass" className="form-label">
+                                Contraseña
+                              </label>
+                              <input
+                                required
+                                id="pass"
+                                type="password"
+                                className="form-control"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
+
                   <div className="modal-footer border-0">
-                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => setShowModal(false)}>
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                      onClick={() => setShowModal(false)}
+                    >
                       Cancelar
                     </button>
-                    <button type="button" className="btn btn-primary">Guardar cambios</button>
+                    <button type="button" className="btn btn-primary">
+                      Guardar cambios
+                    </button>
                   </div>
                 </div>
               </div>

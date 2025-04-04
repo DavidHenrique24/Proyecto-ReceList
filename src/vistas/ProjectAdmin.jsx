@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-const ProjectAdmin= () => {
-  // Simulando algunos datos de recetas
-  const recetas = [
+
+const ProjectAdmin = () => {
+  const [recetas, setRecetas] = useState([
     {
       id: 1,
       imagen: 'https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/737c83a7-c1f9-4c95-8bdc-402e3c5aa011/Derivates/b033b224-6745-4914-9c25-f7f2ead80b9f.jpg',
@@ -18,7 +18,6 @@ const ProjectAdmin= () => {
       descripcion: 'Receta fresca y saludable para ensalada César.',
       autor: 'Juanito estrella',
       created_at: '2023-12-13',
-
     },
     {
       id: 3,
@@ -27,10 +26,15 @@ const ProjectAdmin= () => {
       descripcion: 'Receta fresca y saludable para ensalada César.',
       autor: 'Duki',
       created_at: '2023-12-13',
-
     },
-    
-  ];
+  ]);
+
+  const handleChange = (id, campo, valor) => {
+    const nuevasRecetas = recetas.map(receta =>
+      receta.id === id ? { ...receta, [campo]: valor } : receta
+    );
+    setRecetas(nuevasRecetas);
+  };
 
   return (
     <div className="d-flex flex-column min-vh-100">
@@ -38,21 +42,19 @@ const ProjectAdmin= () => {
         <div className="container mt-5 px-1">
           <h1 className="mt-5">Panel de administración de Recetas</h1>
 
-          {/* Tabs de navegación */}
-        <div className="row mt-5">
-          <div className="col-12">
-            <ul className="nav nav-tabs">
-              <li className="nav-item w-50">
-                <Link className="nav-link active" to="/projectAdmin">Recetas</Link>
-              </li>
-              <li className="nav-item w-50">
-                <Link className="nav-link " to="/usuAdmin">Usuarios</Link>
-              </li>
-            </ul>
+          <div className="row mt-5">
+            <div className="col-12">
+              <ul className="nav nav-tabs">
+                <li className="nav-item w-50">
+                  <Link className="nav-link active" to="/projectAdmin">Recetas</Link>
+                </li>
+                <li className="nav-item w-50">
+                  <Link className="nav-link" to="/usuAdmin">Usuarios</Link>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
 
-          {/* Tabla de recetas */}
           <div className="col-12" style={{ overflowX: 'auto' }}>
             <table className="table table-hover align-middle mt-3" style={{ minWidth: '1200px' }}>
               <thead>
@@ -85,6 +87,7 @@ const ProjectAdmin= () => {
                         type="text"
                         className="form-control form-control-sm"
                         value={receta.titulo}
+                        onChange={(e) => handleChange(receta.id, 'titulo', e.target.value)}
                       />
                     </td>
                     <td>
@@ -92,16 +95,22 @@ const ProjectAdmin= () => {
                         type="text"
                         className="form-control form-control-sm"
                         value={receta.descripcion}
+                        onChange={(e) => handleChange(receta.id, 'descripcion', e.target.value)}
                       />
                     </td>
                     <td>
                       <span className="form-control form-control-sm" readOnly>{receta.autor}</span>
                     </td>
                     <td>
-                      <input type="date" className="form-control form-control-sm" value={receta.created_at} />
+                      <input
+                        type="date"
+                        className="form-control form-control-sm"
+                        value={receta.created_at}
+                        onChange={(e) => handleChange(receta.id, 'created_at', e.target.value)}
+                      />
                     </td>
                     <td>
-                      <button className="btn btn-sm btn-success">Editar</button>
+                      <button className="btn btn-sm btn-success">Actualizar</button>
                       <i className="btn btn-sm btn-outline-danger bi bi-trash3 ms-2"></i>
                     </td>
                   </tr>

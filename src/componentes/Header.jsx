@@ -34,10 +34,10 @@ const Header = () => {
                 <i className="bi bi-gear fs-1"></i> {/* Panel de admin */}
               </Link>
               <Link to="/listRece" className="ms-4">
-                <img src="/imagenesProject/descarga.png" alt="Icono de Cocina" style={{ width: "80px" }} />
+                <img src="/imagenesProject/descarga.png" alt="" style={{ width: "55px" }} />
               </Link>
             </li>
-
+            
             {/* Dropdown funcional */}
             <li className="nav-item dropdown position-relative">
               <button
