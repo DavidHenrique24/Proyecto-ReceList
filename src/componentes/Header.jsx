@@ -89,8 +89,8 @@ const Header = () => {
                         Editar perfil
                       </button>
                     </li>
-                    <li><a className="dropdown-item" href="/listRece">Recetas</a></li>
-                    <li><a className="dropdown-item" href="/projectAdmin">Admin Panel</a></li>
+                    <li><Link to={"/listRece"} className="dropdown-item">Recetas</Link></li>
+                    <li><Link to={"/projectAdmin"} className="dropdown-item">Admin Panel</Link></li>
                     <li><hr className="dropdown-divider" /></li>
                     <li><a className="dropdown-item" href="/">Cerrar sesión</a></li>
                   </ul>

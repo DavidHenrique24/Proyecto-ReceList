@@ -11,6 +11,7 @@ const ListRece = () => {
       author: "Carlos",
       img: "https://media.istockphoto.com/id/599498966/es/foto/carne-de-res-guisada-con-patatas.jpg?s=612x612&w=0&k=20&c=O6pzgcP6-_gAng9rqStZgR2M0zZn-BAQiooMae9FIo4=",
       likes: 156,
+      category: "Plato Principal",
     },
     {
       id: 2,
@@ -20,6 +21,7 @@ const ListRece = () => {
       author: "Pedro",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCCha23q54YIVZKJ3huCfgAN2n1XF_UTNbqw&s",
       likes: 98,
+      category: "Plato Principal",
     },
     {
       id: 3,
@@ -29,6 +31,7 @@ const ListRece = () => {
       author: "Ana",
       img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg/800px-001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg",
       likes: 230,
+      category: "Comida Mexicana",
     },
   ]);
 
@@ -62,9 +65,9 @@ const ListRece = () => {
       <div className="border border-top-0 p-3">
         <div className="row">
           <Link to={"/nuevoRece"}>
-          <div className="col-12 col-sm-4 mb-3">
-            <button className="btn btn-primary w-100">Subir receta</button>
-          </div>
+            <div className="col-12 col-sm-4 mb-3">
+              <button className="btn btn-primary w-100">Subir receta</button>
+            </div>
           </Link>
           <div className="d-flex col-12 col-sm-8 mb-3">
             <div className="input-group flex-nowrap">
@@ -89,14 +92,18 @@ const ListRece = () => {
                   <p className="card-text">{recipe.description}</p>
                   <p><strong>Fecha:</strong> {recipe.date}</p>
                   <p><strong>Autor:</strong> {recipe.author}</p>
+                  {/* Mostramos la categoría */}
+                  <p><strong>Categoría:</strong> {recipe.category}</p>
                 </div>
                 <div className="card-footer d-flex justify-content-between align-items-center">
                   <button className="btn btn-sm icono" onClick={() => handleLike(recipe.id)}>
                     {recipe.likes} <i className="bi bi-heart"></i>
                   </button>
                   <div>
-                     <Link to={"/nuevoRece"}><button className="btn btn-sm icono"><i className="bi bi-pencil"></i></button></Link>
-                     <button className="btn btn-sm ms-2 icono"><i className="bi bi-trash"></i></button>
+                    <Link to={"/nuevoRece"}>
+                      <button className="btn btn-sm icono"><i className="bi bi-pencil"></i></button>
+                    </Link>
+                    <button className="btn btn-sm ms-2 icono"><i className="bi bi-trash"></i></button>
                   </div>
                 </div>
               </div>
