@@ -4,8 +4,8 @@ const NuevoRece = () => {
   return (
     <main className="container px-5">
       <div className="container d-flex justify-content-between align-items-center mt-5">
-        <h1 className="m-0">Editar Receta</h1>
-        <Link to="/receList">
+        <h1 className="m-0">Crear Receta</h1>
+        <Link to="/listRece">
           <button className="btn btn-outline-secondary">
             <i className="bi bi-arrow-bar-left" style={{ fontSize: '1em' }}></i> Volver
           </button>
@@ -46,6 +46,18 @@ const NuevoRece = () => {
             <label className="form-label mt-2" htmlFor="fecha"><strong>Fecha de Creación: </strong></label>
             <input id="fecha" type="date" className="form-control" required />
             <div className="invalid-feedback">Por favor, selecciona una fecha.</div>
+
+            {/* Campo para seleccionar la categoría */}
+            <label className="form-label mt-2" htmlFor="categoria"><strong>Categoría: </strong></label>
+            <select id="categoria" className="form-select" required>
+              <option value="">Selecciona una categoría</option>
+              <option value="Plato Principal">Plato Principal</option>
+              <option value="Postre">Postre</option>
+              <option value="Comida Mexicana">Comida Mexicana</option>
+              <option value="Entrante">Entrante</option>
+              <option value="Comida Vegetariana">Comida Vegetariana</option>
+            </select>
+            <div className="invalid-feedback">La categoría es obligatoria.</div>
 
             <input type="submit" className="btn btn-success mt-3" value="Guardar Cambios" />
             <input type="submit" className="btn btn-outline-secondary mt-3" value="Cancelar" />

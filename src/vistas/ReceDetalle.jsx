@@ -5,25 +5,24 @@ const ReceDetalle = () => {
     <main className="container px-3 bg">
       <div className="container w-75">
         <div className="d-flex justify-content-between align-items-center mt-4">
-        <Link to="/listRece">
-          <button className="btn btn-outline-secondary">
-            <i className="bi bi-arrow-bar-left" style={{ fontSize: '1em' }}></i>
-            Volver
-          </button>
-        </Link>
+          <Link to="/listRece">
+            <button className="btn btn-outline-secondary">
+              <i className="bi bi-arrow-bar-left" style={{ fontSize: '1em' }}></i>
+              Volver
+            </button>
+          </Link>
 
           {/* Solo aparece en caso de ser chef */}
           <div className="d-flex align-items-end">
-            <a href="">
+            <Link to={"/editRece"}>
               <button className="btn btn-sm ms-2 icono" style={{ fontSize: '1.25rem' }}>
                 <i className="bi bi-pencil"></i>
               </button>
-            </a>
-            <a href="">
+              </Link>
               <button className="btn btn-sm ms-2 icono" style={{ fontSize: '1.25rem' }}>
                 <i className="bi bi-trash"></i>
               </button>
-            </a>
+          
           </div>
         </div>
         <br />
@@ -48,7 +47,12 @@ const ReceDetalle = () => {
               <strong>Autor: </strong>
               <span id="autor">Juan Pérez</span>
             </p>
-            <br />
+            {/* Categoría */}
+            <p>
+              <strong>Categoría: </strong>
+              <span id="categoria">Plato Principal</span> {/* Cambia esta categoría según corresponda */}
+            </p>
+  
             {/* Detalles de la receta */}
             <div className="col-12 col-md-8">
               <p>
@@ -77,12 +81,11 @@ const ReceDetalle = () => {
               {/* Preparación */}
               <p>
                 <strong>Preparación: </strong>
-                <ol id="preparacion">
-                  <li>Marinar el pollo con ajo, comino, paprika, jugo de limón, sal y pimienta durante al menos 2 horas.</li>
-                  <li>Precalentar el horno a 180°C.</li>
-                  <li>Colocar el pollo en la parrilla o en el horno y cocinar durante 1 hora o hasta que esté bien dorado.</li>
-                  <li>Servir con papas fritas o ensalada al gusto.</li>
-                </ol>
+                <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, laborum error mollitia eius delectus reiciendis nulla laboriosam ipsum veritatis, dolorum quasi minima voluptatum! Iusto dignissimos inventore maiores sed laboriosam eligendi.
+
+                </p>
+               
               </p>
             </div>
           </div>
