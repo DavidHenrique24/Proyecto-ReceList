@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-const nuevoRece = () => {
+const NuevoRece = () => {
   return (
     <main className="container px-5">
       <div className="container d-flex justify-content-between align-items-center mt-5">
@@ -56,4 +56,4 @@ const nuevoRece = () => {
   );
 };
 
-export default nuevoRece;
+export default NuevoRece;

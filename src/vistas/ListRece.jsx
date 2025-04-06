@@ -61,9 +61,11 @@ const ListRece = () => {
       {/* Contenedor de búsqueda y botón */}
       <div className="border border-top-0 p-3">
         <div className="row">
+          <Link to={"/nuevoRece"}>
           <div className="col-12 col-sm-4 mb-3">
             <button className="btn btn-primary w-100">Subir receta</button>
           </div>
+          </Link>
           <div className="d-flex col-12 col-sm-8 mb-3">
             <div className="input-group flex-nowrap">
               <span className="input-group-text"><i className="bi bi-search"></i></span>
@@ -77,26 +79,27 @@ const ListRece = () => {
         <div className="row mt-3">
           {recetas.map((recipe) => (
             <div key={recipe.id} className="col-12 col-md-6 col-lg-4 mb-3">
-              <Link to={`/receDetalle/${recipe.id}`} className="text-decoration-none text-dark">
-                <div className="card h-100">
+              <div className="card h-100">
+                {/* Envolvemos solo la imagen con el Link */}
+                <Link to={`/receDetalle/${recipe.id}`}>
                   <img src={recipe.img} className="card-img-top" alt={recipe.name} />
-                  <div className="card-body">
-                    <h5 className="card-title">{recipe.name}</h5>
-                    <p className="card-text">{recipe.description}</p>
-                    <p><strong>Fecha:</strong> {recipe.date}</p>
-                    <p><strong>Autor:</strong> {recipe.author}</p>
-                  </div>
-                  <div className="card-footer d-flex justify-content-between align-items-center">
-                    <button className="btn btn-sm icono" onClick={() => handleLike(recipe.id)}>
-                      {recipe.likes} <i className="bi bi-heart"></i>
-                    </button>
-                    <div>
-                      <button className="btn btn-sm icono"><i className="bi bi-pencil"></i></button>
-                      <button className="btn btn-sm ms-2 icono"><i className="bi bi-trash"></i></button>
-                    </div>
+                </Link>
+                <div className="card-body">
+                  <h5 className="card-title">{recipe.name}</h5>
+                  <p className="card-text">{recipe.description}</p>
+                  <p><strong>Fecha:</strong> {recipe.date}</p>
+                  <p><strong>Autor:</strong> {recipe.author}</p>
+                </div>
+                <div className="card-footer d-flex justify-content-between align-items-center">
+                  <button className="btn btn-sm icono" onClick={() => handleLike(recipe.id)}>
+                    {recipe.likes} <i className="bi bi-heart"></i>
+                  </button>
+                  <div>
+                     <Link to={"/nuevoRece"}><button className="btn btn-sm icono"><i className="bi bi-pencil"></i></button></Link>
+                     <button className="btn btn-sm ms-2 icono"><i className="bi bi-trash"></i></button>
                   </div>
                 </div>
-              </Link>
+              </div>
             </div>
           ))}
         </div>
