@@ -1,17 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route } from "react-router-dom";
+import Home from "./vistas/Home.jsx";
+import Register from "./vistas/Register.jsx";
+import Login from "./vistas/Login.jsx";
+import ListRece from "./vistas/ListRece.jsx";
+import ReceDetalle from "./vistas/ReceDetalle.jsx";
+import EditRece from "./vistas/editRece.jsx";
+import NotFound from "./vistas/NotFound.jsx";
+import ProjectAdmin from "./vistas/ProjectAdmin.jsx";
+import UsuAdmin from "./vistas/UsuAdmin.jsx";
+import NuevoRece from "./vistas/nuevoRece.jsx";
 
-function App() {
-  const [count, setCount] = useState(0)
 
+
+const App = () => {
   return (
-    <>
-    <h1>ReceList</h1>
-    
-    </>
-  )
-}
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/listRece" element={<ListRece />} />
+      <Route path="/receDetalle" element={<ReceDetalle />} />
+      <Route path="*" element={<NotFound/>} />
+      <Route path="/projectAdmin" element={<ProjectAdmin />} />
+      <Route path="/usuAdmin" element={<UsuAdmin />} />
+      <Route path="/editRece" element={<EditRece />} />
+      <Route path="/nuevoRece" element={<NuevoRece />} />
 
-export default App
+     
+    </Routes>
+  );
+};
+
+export default App;
+
