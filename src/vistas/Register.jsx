@@ -66,6 +66,19 @@ const Register = () => {
               />
             </div>
             <div className="mb-3">
+              <label htmlFor="imagen" className="form-label">Url Imagen</label>
+              <input
+                type="text"
+                className="form-control input-control"
+                id="imagen"
+                name="imagen"
+                value={formData.imagen}
+                onChange={handleChange}
+                required
+              />
+            </div>
+      
+            <div className="mb-3">
               <label htmlFor="clave" className="form-label">Contraseña</label>
               <input
                 type="password"
