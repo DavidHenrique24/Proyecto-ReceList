@@ -9,7 +9,7 @@ const EditPerfil = ({ showModal, setShowModal }) => {
 
           {/* Modal */}
           <div
-            className="modal fade show d-block"
+            className={`modal fade show d-block slide-in-modal`}
             tabIndex="-1"
             aria-labelledby="exampleModalLabel"
             aria-hidden="true"

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import EditPerfil from "./editPerfil";
-import { ls } from "../utils/funciones";
+import { ls } from "./funciones";
 
 const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -57,12 +57,15 @@ const Header = () => {
             {haySesion ? (
               <ul className="navbar-nav d-flex flex-row ms-auto mb-0 gap-4">
                 <li className="nav-item d-flex align-items-center">
+
+                {usuario.rol === "admin" && (
                   <Link to="/projectAdmin" className="nav-link active">
                     <i className="bi bi-gear fs-1"></i>
                   </Link>
-                  <Link to="/listRece" className="ms-4">
-                    <img src="/imagenesProject/descarga.png" alt="" style={{ width: "55px" }} />
-                  </Link>
+                )}  
+                     <Link to="/listRece" className="ms-4">
+                     <img src="/imagenesProject/descarga.png" alt="" style={{ width: "55px" }} />
+                   </Link>
                 </li>
 
                 <li className="nav-item dropdown position-relative">
@@ -92,7 +95,9 @@ const Header = () => {
                         </button>
                       </li>
                       <li><Link to={"/listRece"} className="dropdown-item">Recetas</Link></li>
+                      {usuario.rol === "admin" && (
                       <li><Link to={"/projectAdmin"} className="dropdown-item">Admin Panel</Link></li>
+                      )}
                       <li><hr className="dropdown-divider" /></li>
                       <li><a className="dropdown-item" href="/">Cerrar sesión</a></li>
                     </ul>
@@ -102,7 +107,7 @@ const Header = () => {
             ) : (
               <div className="d-flex gap-3">
                 <Link to="/login" className="btn btn-outline-primary">Iniciar sesión</Link>
-                <Link to="/registro" className="btn btn-primary">Registrarse</Link>
+                <Link to="/register" className="btn btn-primary">Registrarse</Link>
               </div>
             )}
           </div>
