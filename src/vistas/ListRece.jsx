@@ -38,6 +38,7 @@ const ListRece = () => {
 
   return (
     <main className="container mt-5 px-1">
+      
       <h1 className="text-center">Recetas</h1>
 
       {/* Pestañas */}

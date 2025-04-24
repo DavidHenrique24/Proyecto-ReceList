@@ -7,8 +7,8 @@ const ReceDetalle = () => {
         <div className="d-flex justify-content-between align-items-center mt-4">
           <Link to="/listRece">
             <button className="btn btn-outline-secondary">
-              <i className="bi bi-arrow-bar-left" style={{ fontSize: '1em' }}></i>
-              Volver
+              <i className="bi bi-arrow-bar-left " style={{ fontSize: '1em' }}>  Volver</i>
+              
             </button>
           </Link>
 
@@ -92,7 +92,63 @@ const ReceDetalle = () => {
         </div>
         <br />
         <br />
+
+
+
       </div>
+      {/* Comentarios */}
+
+ 
+  <div className="mt-4">
+  {/* Comentario principal */}
+  <div className="mt-4">
+  <h4 className="mb-3">Comentarios</h4>
+  <div className="border p-3 rounded bg-light mb-3 d-flex">
+    <img 
+      src="https://www.directvsports.com/__export/1738067807821/sites/dsports/img/2025/01/28/copia_de_dise-o_sin_t-tulo_-9-.png_1917050570.png" 
+      alt="Lucía Gómez" 
+      className="rounded-circle me-3" 
+      style={{ width: "80px", height: "80px", objectFit: "cover" }} 
+    />
+    <div>
+      <p className="mb-1"><strong>La cabra</strong> <span className="text-muted" style={{ fontSize: "0.9em" }}>– 22/04/2025</span></p>
+      <p className="mb-0">¡Esta receta me salvó la cena! Lo hice para mi familia y todos quedaron encantados. Le agregué un toque de ají amarillo y quedó espectacular 😋🔥</p>
+    </div>
+  </div>
+</div>
+
+  <div className="border p-3 rounded bg-light mb-3 d-flex">
+    <img 
+      src="https://randomuser.me/api/portraits/women/68.jpg" 
+      alt="Lucía Gómez" 
+      className="rounded-circle me-3" 
+      style={{ width: "80px", height: "80px", objectFit: "cover" }} 
+    />
+    <div>
+      <p className="mb-1"><strong>Lucía Gómez</strong> <span className="text-muted" style={{ fontSize: "0.9em" }}>– 22/04/2025</span></p>
+      <p className="mb-2">¡Esta receta me salvó la cena! Lo hice para mi familia y todos quedaron encantados. Le agregué un toque de ají amarillo y quedó espectacular 😋🔥</p>
+
+      {/* Respuesta al comentario */}
+      <div className="ms-4 mt-2 p-2 rounded bg-white border d-flex">
+        <img 
+          src="https://randomuser.me/api/portraits/men/45.jpg" 
+          alt="Chef Responde" 
+          className="rounded-circle me-2" 
+          style={{ width: "50px", height: "50px", objectFit: "cover" }} 
+        />
+        <div>
+          <p className="mb-1"><strong>Chef Rodrigo</strong> <span className="text-muted" style={{ fontSize: "0.85em" }}>– Respuesta</span></p>
+          <p className="mb-0">¡Qué bueno que te gustó, Lucía! Me encanta el toque de ají amarillo, le da ese picante especial 😄🔥</p>
+        </div>
+      </div>
+  </div>
+</div>
+
+</div>
+<br />
+<br />
+
+
     </main>
   );
 };

@@ -23,6 +23,36 @@ const recetas = [
     category: "Entrante",
     likes: 8,
   },
+  {
+    id: 2,
+    img: "https://i.ytimg.com/vi/izgUJtUGwFI/hq720.jpg?sqp=-oaymwE7CK4FEIIDSFryq4qpAy0IARUAAAAAGAElAADIQj0AgKJD8AEB-AH-CYAC0AWKAgwIABABGHIgTig4MA8=&rs=AOn4CLDYo3aYmlxQ4ohUj0H4BxDqMx70Bw",
+    name: "Receta 2",
+    description: "Descripción de la receta 2",
+    date: "2025-04-09",
+    author: "Autor 2",
+    category: "Entrante",
+    likes: 8,
+  },
+  {
+    id: 2,
+    img: "https://i.ytimg.com/vi/izgUJtUGwFI/hq720.jpg?sqp=-oaymwE7CK4FEIIDSFryq4qpAy0IARUAAAAAGAElAADIQj0AgKJD8AEB-AH-CYAC0AWKAgwIABABGHIgTig4MA8=&rs=AOn4CLDYo3aYmlxQ4ohUj0H4BxDqMx70Bw",
+    name: "Receta 2",
+    description: "Descripción de la receta 2",
+    date: "2025-04-09",
+    author: "Autor 2",
+    category: "Entrante",
+    likes: 8,
+  },
+  {
+    id: 2,
+    img: "https://i.ytimg.com/vi/izgUJtUGwFI/hq720.jpg?sqp=-oaymwE7CK4FEIIDSFryq4qpAy0IARUAAAAAGAElAADIQj0AgKJD8AEB-AH-CYAC0AWKAgwIABABGHIgTig4MA8=&rs=AOn4CLDYo3aYmlxQ4ohUj0H4BxDqMx70Bw",
+    name: "Receta 2",
+    description: "Descripción de la receta 2",
+    date: "2025-04-09",
+    author: "Autor 2",
+    category: "Entrante",
+    likes: 8,
+  },
   { 
   id: 3,
   img: "https://i.ytimg.com/vi/izgUJtUGwFI/hq720.jpg?sqp=-oaymwE7CK4FEIIDSFryq4qpAy0IARUAAAAAGAElAADIQj0AgKJD8AEB-AH-CYAC0AWKAgwIABABGHIgTig4MA8=&rs=AOn4CLDYo3aYmlxQ4ohUj0H4BxDqMx70Bw",
@@ -84,7 +114,9 @@ const Home = () => {
         <h2 className="display-1 fw-bold">Últimas Recetas <img src="/imagenesProject/descarga.png" alt="" style={{ width: "100px" }} /> </h2>
 
         {/* Tarjetas de recetas */}
+        
         <div className="row mt-3">
+          
           {recetas.map((recipe) => (
             <div key={recipe.id} className="col-12 col-md-6 col-lg-4 mb-3">
               <div className="card h-100">
@@ -123,7 +155,19 @@ const Home = () => {
               </div>
             </div>
           ))}
-      
+
+          
+
+          {/* Tarjeta de registro */}
+<div className="mt-5 p-4 bg-dark text-white rounded shadow text-center">
+  <h3 className="mb-3">¿Quieres Cocinar?</h3>
+  <p>Regístrate gratis para subir tus propias recetas, guardar tus favoritas y más.</p>
+  <Link to="/register">
+    <button className="btn btn-outline-light mt-2">Registrarse</button>
+  </Link>
+</div>
+
+
         </div>
       </div>
       <br />

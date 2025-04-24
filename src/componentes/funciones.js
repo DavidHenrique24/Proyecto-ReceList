@@ -5,9 +5,9 @@ export const ls = {
       // Definimos usuario anónimo por si no hay datos en localStorage
       let usuario = {
         imagen: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_-xaNRMVqjfSV_Q3-g0Z3oILDVVXaCxQxLA&s',
-        nombre: 'Anónimo',
+        nombre: 'Teeto',
         email: 'Anonimo@example.com',
-        rol: 'regsas',
+        rol: 'admin',
         fechaRegistro: '2023-01-15',
         activo: 'Sí'
       };
