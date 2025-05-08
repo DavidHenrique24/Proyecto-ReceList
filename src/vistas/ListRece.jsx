@@ -35,16 +35,10 @@ const ListRece = () => {
     },
   ]);
 
-  const handleLike = (id) => {
-    setRecetas((prevRecetas) =>
-      prevRecetas.map((recipe) =>
-        recipe.id === id ? { ...recipe, likes: recipe.likes + 1 } : recipe
-      )
-    );
-  };
 
   return (
     <main className="container mt-5 px-1">
+      
       <h1 className="text-center">Recetas</h1>
 
       {/* Pestañas */}
@@ -100,7 +94,7 @@ const ListRece = () => {
                     {recipe.likes} <i className="bi bi-heart"></i>
                   </button>
                   <div>
-                    <Link to={"/nuevoRece"}>
+                    <Link to={"/editRece"}>
                       <button className="btn btn-sm icono"><i className="bi bi-pencil"></i></button>
                     </Link>
                     <button className="btn btn-sm ms-2 icono"><i className="bi bi-trash"></i></button>
