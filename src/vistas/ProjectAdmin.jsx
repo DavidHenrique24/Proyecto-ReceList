@@ -1,39 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import supabase from '../utils/supabase'; 
 
 const ProjectAdmin = () => {
-  const [recetas, setRecetas] = useState([
-    {
-      id: 1,
-      imagen: 'https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/737c83a7-c1f9-4c95-8bdc-402e3c5aa011/Derivates/b033b224-6745-4914-9c25-f7f2ead80b9f.jpg',
-      titulo: 'Receta de Pastel',
-      descripcion: 'Deliciosa receta para hacer un pastel de chocolate.',
-      autor: 'Juan Pérez',
-      created_at: '2023-12-12',
-    },
-    {
-      id: 2,
-      imagen: 'https://imagenes.elpais.com/resizer/v2/3KWQUZHLQFGVRIWYQGO3A5WFD4.jpg?auth=f2d14d8886b49351024920c894e7f4b9f518886e962c654538d191ee37e30bac&width=1200',
-      titulo: 'Ensalada César',
-      descripcion: 'Receta fresca y saludable para ensalada César.',
-      autor: 'Juanito estrella',
-      created_at: '2023-12-13',
-    },
-    {
-      id: 3,
-      imagen: 'https://img.hellofresh.com/w_3840,q_auto,f_auto,c_fill,fl_lossy/hellofresh_website/es/cms/SEO/recipes/albondigas-caseras-de-cerdo-con-salsa-barbacoa.jpeg',
-      titulo: 'Cesar enasalada',
-      descripcion: 'Receta fresca y saludable para ensalada César.',
-      autor: 'Duki',
-      created_at: '2023-12-13',
-    },
-  ]);
+  const [recetas, setRecetas] = useState([]);
+  
+  // Función para obtener las recetas desde Supabase
+  const fetchRecetas = async () => {
+    const { data, error } = await supabase
+      .from('recetas')
+      .select('*');
+    
+    if (error) {
+      console.error('Error al obtener recetas:', error);
+    } else {
+      setRecetas(data);
+    }
+  };
 
+  // Cargar las recetas cuando el componente se monta
+  useEffect(() => {
+    fetchRecetas();
+  }, []);
+
+  // Función para manejar cambios en los campos de las recetas
   const handleChange = (id, campo, valor) => {
     const nuevasRecetas = recetas.map(receta =>
       receta.id === id ? { ...receta, [campo]: valor } : receta
     );
     setRecetas(nuevasRecetas);
+  };
+
+  // Función para actualizar la receta en Supabase
+  const handleUpdate = async (receta) => {
+    const { error } = await supabase
+      .from('recetas')
+      .update({
+        titulo: receta.titulo,
+        descripcion: receta.descripcion,
+        created_at: receta.created_at,
+      })
+      .eq('id', receta.id);
+
+    if (error) {
+      console.error('Error al actualizar la receta:', error);
+    } else {
+      console.log('Receta actualizada correctamente');
+    }
   };
 
   return (
@@ -62,8 +75,7 @@ const ProjectAdmin = () => {
                   <th>Imagen</th>
                   <th>Título</th>
                   <th>Descripción</th>
-                  <th>Autor</th>
-                  <th>created_at</th>
+                  <th>Created at</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -74,7 +86,7 @@ const ProjectAdmin = () => {
                       <div
                         className="containerImagen"
                         style={{
-                          backgroundImage: `url(${receta.imagen})`,
+                          backgroundImage: `url(${receta.portada})`,
                           width: '90px',
                           height: '90px',
                           backgroundSize: 'cover',
@@ -99,9 +111,6 @@ const ProjectAdmin = () => {
                       />
                     </td>
                     <td>
-                      <span className="form-control form-control-sm" readOnly>{receta.autor}</span>
-                    </td>
-                    <td>
                       <input
                         type="date"
                         className="form-control form-control-sm"
@@ -110,7 +119,12 @@ const ProjectAdmin = () => {
                       />
                     </td>
                     <td>
-                      <button className="btn btn-sm btn-success">Actualizar</button>
+                      <button
+                        className="btn btn-sm btn-success"
+                        onClick={() => handleUpdate(receta)}
+                      >
+                        Actualizar
+                      </button>
                       <i className="btn btn-sm btn-outline-danger bi bi-trash3 ms-2"></i>
                     </td>
                   </tr>

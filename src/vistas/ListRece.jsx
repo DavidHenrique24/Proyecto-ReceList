@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import  supabase from "../utils/supabase"; // Asegúrate de que esta ruta sea correcta
+import supabase from "../utils/supabase";
 
 const ListRece = () => {
   const [recetas, setRecetas] = useState([]);
 
+  // Fetch recetas desde Supabase
   useEffect(() => {
     const fetchRecetas = async () => {
       const { data, error } = await supabase
@@ -21,6 +22,40 @@ const ListRece = () => {
     fetchRecetas();
   }, []);
 
+  // Función para eliminar receta
+  const deleteReceta = async (id) => {
+    const { error } = await supabase
+      .from("recetas")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error al eliminar receta:", error.message);
+    } else {
+      setRecetas(recetas.filter((receta) => receta.id !== id));
+    }
+  };
+
+  // Función para dar like a la receta
+  const handleLike = async (id, currentLikes) => {
+    const { error } = await supabase
+      .from("recetas")
+      .update({ likes: currentLikes + 1 })
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error al dar like a la receta:", error.message);
+    } else {
+      setRecetas(
+        recetas.map((receta) =>
+          receta.id === id
+            ? { ...receta, likes: currentLikes + 1 }
+            : receta
+        )
+      );
+    }
+  };
+
   return (
     <main className="container mt-5 px-1">
       <h1 className="text-center">Recetas</h1>
@@ -29,10 +64,14 @@ const ListRece = () => {
         <div className="col-12">
           <ul className="nav nav-tabs">
             <li className="nav-item w-50">
-              <a className="nav-link active" href="#">Todas Las Recetas</a>
+              <a className="nav-link active" href="#">
+                Todas Las Recetas
+              </a>
             </li>
             <li className="nav-item w-50">
-              <a className="nav-link" href="#">Mis Recetas</a>
+              <a className="nav-link" href="#">
+                Mis Recetas
+              </a>
             </li>
           </ul>
         </div>
@@ -47,9 +86,17 @@ const ListRece = () => {
           </Link>
           <div className="d-flex col-12 col-sm-8 mb-3">
             <div className="input-group flex-nowrap">
-              <span className="input-group-text"><i className="bi bi-search"></i></span>
-              <input type="text" className="form-control" placeholder="Buscar receta" />
-              <span className="input-group-text"><i className="bi bi-x"></i></span>
+              <span className="input-group-text">
+                <i className="bi bi-search"></i>
+              </span>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Buscar receta"
+              />
+              <span className="input-group-text">
+                <i className="bi bi-x"></i>
+              </span>
             </div>
           </div>
         </div>
@@ -74,10 +121,23 @@ const ListRece = () => {
                   </p>
                 </div>
                 <div className="card-footer d-flex justify-content-between align-items-center">
+                  <button
+                    className="btn btn-sm icono"
+                    onClick={() => handleLike(receta.id, receta.likes)}
+                  >
+                    {receta.likes} <i className="bi bi-heart"></i>
+                  </button>
                   <Link to={`/editRece/${receta.id}`}>
-                    <button className="btn btn-sm icono"><i className="bi bi-pencil"></i></button>
+                    <button className="btn btn-sm icono">
+                      <i className="bi bi-pencil"></i>
+                    </button>
                   </Link>
-                  <button className="btn btn-sm ms-2 icono"><i className="bi bi-trash"></i></button>
+                  <button
+                    className="btn btn-sm ms-2 icono"
+                    onClick={() => deleteReceta(receta.id)}
+                  >
+                    <i className="bi bi-trash"></i>
+                  </button>
                 </div>
               </div>
             </div>
