@@ -9,27 +9,28 @@ import NotFound from "./vistas/NotFound.jsx";
 import ProjectAdmin from "./vistas/ProjectAdmin.jsx";
 import UsuAdmin from "./vistas/UsuAdmin.jsx";
 import NuevoRece from "./vistas/nuevoRece.jsx";
-
-
+import Header from "./componentes/Header.jsx";
+import Footer from "./componentes/Footer.jsx";
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/listRece" element={<ListRece />} />
-      <Route path="/receDetalle" element={<ReceDetalle />} />
-      <Route path="*" element={<NotFound/>} />
-      <Route path="/projectAdmin" element={<ProjectAdmin />} />
-      <Route path="/usuAdmin" element={<UsuAdmin />} />
-      <Route path="/editRece" element={<EditRece />} />
-      <Route path="/nuevoRece" element={<NuevoRece />} />
-
-     
-    </Routes>
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/listRece" element={<ListRece />} />
+        <Route path="/receDetalle" element={<ReceDetalle />} />
+        <Route path="/editRece" element={<EditRece />} />
+        <Route path="/nuevoRece" element={<NuevoRece />} />
+        <Route path="/projectAdmin" element={<ProjectAdmin />} />
+        <Route path="/usuAdmin" element={<UsuAdmin />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <Footer />
+    </>
   );
 };
 
 export default App;
-
