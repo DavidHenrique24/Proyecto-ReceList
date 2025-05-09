@@ -38,7 +38,6 @@ const ProjectAdmin = () => {
       .update({
         titulo: receta.titulo,
         descripcion: receta.descripcion,
-        created_at: receta.created_at,
       })
       .eq('id', receta.id);
 
@@ -111,12 +110,7 @@ const ProjectAdmin = () => {
                       />
                     </td>
                     <td>
-                      <input
-                        type="date"
-                        className="form-control form-control-sm"
-                        value={receta.created_at}
-                        onChange={(e) => handleChange(receta.id, 'created_at', e.target.value)}
-                      />
+                      <span>{new Date(receta.created_at).toLocaleString()}</span>
                     </td>
                     <td>
                       <button
