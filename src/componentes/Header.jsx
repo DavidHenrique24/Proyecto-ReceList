@@ -32,7 +32,15 @@ const Header = () => {
     setShowDropdown(false);
   };
 
+  const cerrarSesion = () => {
+    setUser(null);
+    localStorage.removeItem('usuario');
+    navigate('/');
+  };
+
   const haySesion = user && user.nombre;
+
+
 
   return (
     <>
@@ -100,7 +108,7 @@ const Header = () => {
                       <li><Link to={"/projectAdmin"} className="dropdown-item">Admin Panel</Link></li>
                       )}
                       <li><hr className="dropdown-divider" /></li>
-                      <li><a className="dropdown-item" href="/">Cerrar sesión</a></li>
+                      <li><a className="dropdown-item"  onClick={cerrarSesion} href="/">Cerrar sesión</a></li>
                     </ul>
                   )}
                 </li>
