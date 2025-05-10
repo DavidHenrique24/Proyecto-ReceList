@@ -1,27 +1,65 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import supabase from '../utils/supabase'; // Asegúrate de que la ruta sea correcta
+import { useUser } from '../componentes/userProvider'; // Asegúrate de que la ruta sea correcta
 
 const Login = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
+  const [contrasena, setContrasena] = useState('');
+  const [mensaje, setMensaje] = useState('');
+  const { setUser } = useUser(); // Accedemos a setUser desde el contexto
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  // Función para gestionar el inicio de sesión
+  const gestionarLogin = async (e) => {
     e.preventDefault();
 
-    // Llamada a Supabase para la autenticación
+    // Usar Supabase para autenticar al usuario con los valores del formulario
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
-      password
+      password: contrasena, // Asegúrate de que se pase la variable correcta
     });
 
+    // Comprobamos si hubo un error
     if (error) {
-      setError('Correo o contraseña incorrectos');
+      setMensaje('Usuario o contraseña incorrectos');
+      console.error('Error de autenticación:', error.message);
+      return;
+    }
+
+    // Verificamos si data.user es válido antes de realizar la consulta al rol
+    if (data?.user) {
+      const { data: userData, error: userError } = await supabase
+      .from('usuarios')
+      .select('rol, nombre, avatar')
+      .eq('user_id', data.user.id)
+      .single();
+    
+
+      if (userError) {
+        console.error('Error al obtener el rol del usuario:', userError.message);
+        setMensaje('Error al obtener el rol del usuario.');
+        return;
+      }
+
+      // Mostrar en consola la información del usuario y su rol
+      console.log('Usuario autenticado:', data.user);
+      console.log('Rol del usuario:', userData?.rol);
+
+      // Guardar el usuario y su rol en el contexto
+      setUser({
+        ...data.user,
+        rol: userData?.rol,
+        nombre: userData?.nombre,
+        avatar: userData?.avatar
+      });
+      
+
+      // Redirigir al panel de usuario
+      navigate('/listRece'); 
     } else {
-      setError(null); // Resetea el error si la autenticación fue exitosa
-      navigate('/listRece'); // Redirige tras login exitoso
+      setMensaje('Error de autenticación');
+      console.error('No se pudo obtener el usuario');
     }
   };
 
@@ -31,10 +69,10 @@ const Login = () => {
         <div className="contenido-registrar">
           <h2 className="text-white mb-4 text-center">Iniciar sesión</h2>
 
-          {/* Mostrar error si existe */}
-          {error && <div className="alert alert-danger">{error}</div>}
+          {/* Mostrar mensaje de error si existe */}
+          {mensaje && <div className="alert alert-danger">{mensaje}</div>} {/* Cambié 'error' por 'mensaje' */}
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={gestionarLogin}>
             <div className="mb-3">
               <label htmlFor="correo-electronico" className="form-label">Correo electrónico</label>
               <input
@@ -53,8 +91,8 @@ const Login = () => {
                 type="password"
                 className="form-control input-control"
                 id="clave"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={contrasena}
+                onChange={(e) => setContrasena(e.target.value)}
                 required
               />
             </div>

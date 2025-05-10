@@ -1,24 +1,25 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import EditPerfil from "./editPerfil";
-import { ls } from "./funciones";
+import { useUser } from "../componentes/userProvider"; 
 
 const Header = () => {
+  const { user, setUser } = useUser();
+
   const [showDropdown, setShowDropdown] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [searchActive, setSearchActive] = useState(false);
   const searchInputRef = useRef(null);
 
-  const [usuario, setUsuario] = useState({
-    imagen: '',
-    nombre: '',
-    rol: ''
-  });
 
   useEffect(() => {
-    const usuarioGuardado = ls.getUsuario();
-    setUsuario(usuarioGuardado || { imagen: '', nombre: '', rol: '' });
-  }, []);
+    const userGuardado = JSON.parse(localStorage.getItem('user'));
+    if (userGuardado) {
+      setUser(userGuardado);
+    }
+  }, [setUser]);
+
+
 
   useEffect(() => {
     if (searchActive && searchInputRef.current) {
@@ -31,7 +32,7 @@ const Header = () => {
     setShowDropdown(false);
   };
 
-  const haySesion = usuario && usuario.nombre;
+  const haySesion = user && user.nombre;
 
   return (
     <>
@@ -58,7 +59,7 @@ const Header = () => {
               <ul className="navbar-nav d-flex flex-row ms-auto mb-0 gap-4">
                 <li className="nav-item d-flex align-items-center">
 
-                {usuario.rol === "admin" && (
+                {user.rol === "admin" && (
                   <Link to="/projectAdmin" className="nav-link active">
                     <i className="bi bi-gear fs-1"></i>
                   </Link>
@@ -74,7 +75,7 @@ const Header = () => {
                     onClick={() => setShowDropdown(!showDropdown)}
                   >
                     <img
-                      src={usuario.imagen}
+                      src={user.avatar}
                       alt="Perfil"
                       width="70"
                       height="70"
@@ -85,8 +86,8 @@ const Header = () => {
                   {showDropdown && (
                     <ul className="dropdown-menu show position-absolute" style={{ left: "-100px", width: "180px" }}>
                       <li className="text-dark text-center p-2">
-                        <p className="mb-0 fw-bold">{usuario.nombre}</p>
-                        <small className="text-muted">{usuario.rol}</small>
+                        <p className="mb-0 fw-bold">{user.nombre}</p>
+                        <small className="text-muted">{user.rol}</small>
                       </li>
                       <li><hr className="dropdown-divider" /></li>
                       <li>
@@ -95,7 +96,7 @@ const Header = () => {
                         </button>
                       </li>
                       <li><Link to={"/listRece"} className="dropdown-item">Recetas</Link></li>
-                      {usuario.rol === "admin" && (
+                      {user.rol === "admin" && (
                       <li><Link to={"/projectAdmin"} className="dropdown-item">Admin Panel</Link></li>
                       )}
                       <li><hr className="dropdown-divider" /></li>

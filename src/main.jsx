@@ -5,14 +5,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./index.css";
 import App from "./App.jsx";
-import { UserProvider } from "./componentes/userProvider.jsx";
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <UserProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </UserProvider>
+
   </StrictMode>
 );
