@@ -1,105 +1,104 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import  supabase  from "../utils/supabase"; // Ajusta la ruta si es necesario
 
 const ReceDetalle = () => {
+  const [receta, setReceta] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const { id } = useParams() // Para cargar receta por ID
+
+  useEffect(() => {
+    const obtenerReceta = async () => {
+      const { data, error } = await supabase
+        .from("recetas")
+        .select("*")
+        .eq("id", id)
+        .single()
+
+      if (error) {
+        console.error("Error al obtener la receta:", error.message)
+        setLoading(false)
+        return
+      }
+
+      setReceta(data)
+      setLoading(false)
+    }
+
+    obtenerReceta()
+  }, [id])
+
+  if (loading) return <p className="text-center">Cargando receta...</p>
+  if (!receta) return <p className="text-center">No se encontró la receta</p>
+
   return (
     <main className="container px-3 bg">
       <div className="container w-75">
         <div className="d-flex justify-content-between align-items-center mt-4">
           <Link to="/listRece">
             <button className="btn btn-outline-secondary">
-              <i className="bi bi-arrow-bar-left " style={{ fontSize: '1em' }}>  Volver</i>
-              
+              <i className="bi bi-arrow-bar-left" style={{ fontSize: "1em" }}>
+                {" "}
+                Volver
+              </i>
             </button>
           </Link>
-
-          {/* Solo aparece en caso de ser chef */}
+          
           <div className="d-flex align-items-end">
-            <Link to={"/editRece"}>
-              <button className="btn btn-sm ms-2 icono" style={{ fontSize: '1.25rem' }}>
+            <Link to={`/editRece/${id}`}>
+              <button className="btn btn-sm ms-2 icono" style={{ fontSize: "1.25rem" }}>
                 <i className="bi bi-pencil"></i>
               </button>
-              </Link>
-              <button className="btn btn-sm ms-2 icono" style={{ fontSize: '1.25rem' }}>
-                <i className="bi bi-trash"></i>
-              </button>
-          
+            </Link>
+            <button className="btn btn-sm ms-2 icono" style={{ fontSize: "1.25rem" }}>
+              <i className="bi bi-trash"></i>
+            </button>
           </div>
         </div>
+
         <br />
-        <br />
-        <h1 className="mt-2">Pollo De Brasa</h1>
+        <h1 className="mt-2">{receta.titulo}</h1>
         <br />
 
         <div className="row mt-2">
           <div className="col-12 text-center mb-3">
             <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCCha23q54YIVZKJ3huCfgAN2n1XF_UTNbqw&s"
-              alt="Pollo De Brasa"
+              src={receta.portada}
+              alt={receta.titulo}
               className="img-fluid w-100 mx-auto rounded"
             />
           </div>
           <div className="col-12">
-            <p>
-              <strong>Fecha: </strong>
-              <span id="fecha">12/12/2023</span>
-            </p>
-            <p>
-              <strong>Autor: </strong>
-              <span id="autor">Juan Pérez</span>
-            </p>
-            {/* Categoría */}
-            <p>
-              <strong>Categoría: </strong>
-              <span id="categoria">Plato Principal</span> {/* Cambia esta categoría según corresponda */}
-            </p>
-  
-            {/* Detalles de la receta */}
-            <div className="col-12 col-md-8">
-              <p>
-                <strong>Descripción: </strong>
-                <span id="descripcion">
-                  El pollo de brasa es un plato tradicional de la gastronomía peruana, cocinado a la brasa
-                  con un aderezo especial. Es una receta deliciosa, perfecta para acompañar con papas fritas
-                  o ensalada.
-                </span>
-              </p>
+            <p><strong>Fecha de creación:</strong> {new Date(receta.created_at).toLocaleString()}</p>
 
-              {/* Ingredientes */}
+            <div className="col-12 col-md-8">
+              <p><strong>Descripción: </strong> {receta.descripcion}</p>
+
               <p>
-                <strong>Ingredientes: </strong>
-                <ul id="ingredientes">
-                  <li>1 Pollo entero</li>
-                  <li>3 dientes de ajo</li>
-                  <li>1 cucharada de comino</li>
-                  <li>1 cucharada de paprika</li>
-                  <li>1/2 taza de jugo de limón</li>
-                  <li>Pimienta al gusto</li>
-                  <li>Sal al gusto</li>
+                <strong>Ingredientes:</strong>
+                <ul>
+                  {receta.ingredientes?.split("\n").map((ing, i) => (
+                    <li key={i}>{ing}</li>
+                  ))}
                 </ul>
               </p>
 
-              {/* Preparación */}
               <p>
-                <strong>Preparación: </strong>
+                <strong>Pasos:</strong>
                 <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, laborum error mollitia eius delectus reiciendis nulla laboriosam ipsum veritatis, dolorum quasi minima voluptatum! Iusto dignissimos inventore maiores sed laboriosam eligendi.
-
+                 {receta.pasos}
                 </p>
-               
               </p>
             </div>
           </div>
         </div>
-        <br />
-        <br />
 
-
-
+  
       </div>
-      {/* Comentarios */}
 
- 
-  <div className="mt-4">
+
+
+      <div className="mt-4">
   {/* Comentario principal */}
   <div className="mt-4">
   <h4 className="mb-3">Comentarios</h4>
@@ -147,10 +146,8 @@ const ReceDetalle = () => {
 </div>
 <br />
 <br />
-
-
     </main>
-  );
-};
+  )
+}
 
 export default ReceDetalle;
