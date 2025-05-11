@@ -1,16 +1,16 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EditPerfil from "./editPerfil";
-import { useUser } from "../componentes/userProvider"; 
+import { useUser } from "../componentes/userProvider";
 
 const Header = () => {
   const { user, setUser } = useUser();
+  const navigate = useNavigate();
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [searchActive, setSearchActive] = useState(false);
   const searchInputRef = useRef(null);
-
 
   useEffect(() => {
     const userGuardado = JSON.parse(localStorage.getItem('user'));
@@ -18,8 +18,6 @@ const Header = () => {
       setUser(userGuardado);
     }
   }, [setUser]);
-
-
 
   useEffect(() => {
     if (searchActive && searchInputRef.current) {
@@ -34,12 +32,11 @@ const Header = () => {
 
   const cerrarSesion = () => {
     setUser(null);
-    localStorage.removeItem('usuario');
+    localStorage.removeItem('user');
     navigate('/');
   };
 
   const haySesion = user && user.nombre;
-
 
 
   return (
@@ -66,15 +63,14 @@ const Header = () => {
             {haySesion ? (
               <ul className="navbar-nav d-flex flex-row ms-auto mb-0 gap-4">
                 <li className="nav-item d-flex align-items-center">
-
-                {user.rol === "admin" && (
-                  <Link to="/projectAdmin" className="nav-link active">
-                    <i className="bi bi-gear fs-1"></i>
+                  {user.rol === "admin" && (
+                    <Link to="/projectAdmin" className="nav-link active">
+                      <i className="bi bi-gear fs-1"></i>
+                    </Link>
+                  )}
+                  <Link to="/listRece" className="ms-4">
+                    <img src="/imagenesProject/descarga.png" alt="" style={{ width: "55px" }} />
                   </Link>
-                )}  
-                     <Link to="/listRece" className="ms-4">
-                     <img src="/imagenesProject/descarga.png" alt="" style={{ width: "55px" }} />
-                   </Link>
                 </li>
 
                 <li className="nav-item dropdown position-relative">
@@ -90,12 +86,11 @@ const Header = () => {
                       className="rounded-circle"
                     />
                   </button>
-
+                  
                   {showDropdown && (
                     <ul className="dropdown-menu show position-absolute" style={{ left: "-100px", width: "180px" }}>
                       <li className="text-dark text-center p-2">
                         <p className="mb-0 fw-bold">{user.nombre}</p>
-                        <small className="text-muted">{user.rol}</small>
                       </li>
                       <li><hr className="dropdown-divider" /></li>
                       <li>
@@ -105,10 +100,10 @@ const Header = () => {
                       </li>
                       <li><Link to={"/listRece"} className="dropdown-item">Recetas</Link></li>
                       {user.rol === "admin" && (
-                      <li><Link to={"/projectAdmin"} className="dropdown-item">Admin Panel</Link></li>
+                        <li><Link to={"/projectAdmin"} className="dropdown-item">Admin Panel</Link></li>
                       )}
                       <li><hr className="dropdown-divider" /></li>
-                      <li><a className="dropdown-item"  onClick={cerrarSesion} href="/">Cerrar sesión</a></li>
+                      <li><a className="dropdown-item" onClick={cerrarSesion} href="/">Cerrar sesión</a></li>
                     </ul>
                   )}
                 </li>
@@ -136,7 +131,7 @@ const Header = () => {
         )}
       </header>
 
-      <EditPerfil showModal={showModal} setShowModal={setShowModal} />
+      <EditPerfil showModal={showModal} setShowModal={setShowModal} setUser={setUser} />
     </>
   );
 };

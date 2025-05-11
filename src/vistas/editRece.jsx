@@ -1,54 +1,150 @@
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import supabase from '../utils/supabase';
 
 const EditRece = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [receta, setReceta] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Cargar receta al iniciar
+  useEffect(() => {
+    const fetchReceta = async () => {
+      const { data, error } = await supabase
+        .from('recetas')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        console.error('Error al cargar la receta:', error.message);
+        return;
+      }
+
+      setReceta(data);
+      setLoading(false);
+    };
+
+    fetchReceta();
+  }, [id]);
+
+  // Manejar cambios en los campos
+  const handleChange = (e) => {
+    setReceta({ ...receta, [e.target.id]: e.target.value });
+  };
+
+  // Enviar formulario
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const { error } = await supabase
+      .from('recetas')
+      .update({
+        titulo: receta.titulo,
+        descripcion: receta.descripcion,
+        ingredientes: receta.ingredientes,
+        pasos: receta.pasos,
+        portada: receta.portada,
+        created_at: receta.created_at,
+      })
+      .eq('id', id);
+
+    if (error) {
+      console.error('Error al actualizar receta:', error.message);
+      return;
+    }
+
+    navigate('/listRece');
+  };
+
+  if (loading) return <p className="text-center">Cargando datos de la receta...</p>;
+  if (!receta) return <p className="text-center">No se encontró la receta</p>;
+
   return (
     <main className="container px-5">
       <div className="container d-flex justify-content-between align-items-center mt-5">
-        <h1 className="m-0">Editar Receta</h1>
+        <h1 className="m-0">Editar {receta.titulo}</h1>
         <Link to="/listRece">
           <button className="btn btn-outline-secondary">
             <i className="bi bi-arrow-bar-left" style={{ fontSize: '1em' }}></i> Volver
           </button>
         </Link>
       </div>
-      <br/>
+      <br />
 
-      <form action="" className="form border shadow-sm p-3" noValidate>
+      <form onSubmit={handleSubmit} className="form border shadow-sm p-3" noValidate>
         <div className="row mt-2">
           <div className="col-12">
             <img
-              src="https://www.bbva.com/wp-content/uploads/2023/04/cocina-de-aprovechamiento.jpg"
+              src={receta.portada}
               alt="Imagen de la receta"
               className="img-fluid mb-3"
             />
-            <label className="form-label mt-2" htmlFor="urlImagen"><strong>URL Imagen: </strong></label>
-            <input id="urlImagen" type="text" className="form-control" value="http://enlaceImagen.com" required />
-            <div className="invalid-feedback">Por favor, ingresa una URL válida.</div>
+            <label className="form-label mt-2" htmlFor="portada"><strong>URL Imagen:</strong></label>
+            <input
+              id="portada"
+              type="text"
+              className="form-control"
+              value={receta.portada}
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <div className="col-12">
-            <label className="form-label mt-2" htmlFor="nombre"><strong>Nombre de la Receta: </strong></label>
-            <input required id="nombre" type="text" value="Nombre Receta" className="form-control" />
-            <div className="invalid-feedback">El nombre es obligatorio.</div>
+            <label className="form-label mt-2" htmlFor="titulo"><strong>Nombre de la Receta:</strong></label>
+            <input
+              id="titulo"
+              type="text"
+              value={receta.titulo}
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
 
-            <label className="form-label mt-2" htmlFor="descripcion"><strong>Descripción: </strong></label>
-            <textarea id="descripcion" className="form-control" rows="4" required>Breve descripción de la receta.</textarea>
-            <div className="invalid-feedback">La descripción es obligatoria.</div>
+            <label className="form-label mt-2" htmlFor="descripcion"><strong>Descripción:</strong></label>
+            <textarea
+              id="descripcion"
+              className="form-control"
+              rows="4"
+              value={receta.descripcion}
+              onChange={handleChange}
+              required
+            ></textarea>
 
-            <label className="form-label mt-2" htmlFor="ingredientes"><strong>Ingredientes: </strong></label>
-            <textarea id="ingredientes" className="form-control" rows="4" required>Lista de ingredientes necesarios.</textarea>
-            <div className="invalid-feedback">Los ingredientes son obligatorios.</div>
+            <label className="form-label mt-2" htmlFor="ingredientes"><strong>Ingredientes:</strong></label>
+            <textarea
+              id="ingredientes"
+              className="form-control"
+              rows="4"
+              value={receta.ingredientes}
+              onChange={handleChange}
+              required
+            ></textarea>
 
-            <label className="form-label mt-2" htmlFor="preparacion"><strong>Preparación: </strong></label>
-            <textarea id="preparacion" className="form-control" rows="6" required>Pasos para preparar la receta.</textarea>
-            <div className="invalid-feedback">La preparación es obligatoria.</div>
+            <label className="form-label mt-2" htmlFor="pasos"><strong>Preparación:</strong></label>
+            <textarea
+              id="pasos"
+              className="form-control"
+              rows="6"
+              value={receta.pasos}
+              onChange={handleChange}
+              required
+            ></textarea>
 
-            <label className="form-label mt-2" htmlFor="fecha"><strong>Fecha de Creación: </strong></label>
-            <input id="fecha" type="date" className="form-control" required />
-            <div className="invalid-feedback">Por favor, selecciona una fecha.</div>
+            <label className="form-label mt-2" htmlFor="created_at"><strong>Fecha de Creación:</strong></label>
+            <input
+              id="created_at"
+              type="date"
+              className="form-control"
+              value={receta.created_at?.split('T')[0]}
+              onChange={handleChange}
+              required
+            />
 
-            <input type="submit" className="btn btn-success mt-3" value="Guardar Cambios" />
-            <input type="submit" className="btn btn-outline-secondary mt-3" value="Cancelar" />
+            <button type="submit" className="btn btn-success mt-3">Guardar Cambios</button>
+            <button type="button" onClick={() => navigate('/listRece')} className="btn btn-outline-secondary mt-3 ms-2">Cancelar</button>
           </div>
         </div>
       </form>
