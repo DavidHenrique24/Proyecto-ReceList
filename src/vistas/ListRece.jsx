@@ -166,8 +166,9 @@ const ListRece = () => {
                     >
                       {receta.likes} <i className="bi bi-heart"></i>
                     </button>
+                    
                     {/* Si el usuario actual es el autor o un admin, puede editar y borrar */}
-{usuario && (receta.user_id === usuario.id || usuario.role === "admin") && (
+{usuario && (usuario.role === "chef"|| usuario.role === "admin") && (
   <div className="d-flex gap-1">
     <Link to={`/editRece/${receta.id}`}>
       <button className="btn btn-sm icono">

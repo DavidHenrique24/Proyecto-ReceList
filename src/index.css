@@ -142,4 +142,8 @@
   
 
 
-  
+  .fixed-size {
+  width: 900px;  /* Establece el ancho fijo */
+  height: 600px; /* Establece la altura fija */
+  object-fit: cover; /* Asegura que la imagen no se distorsione al ajustarse al tamaño */
+}
