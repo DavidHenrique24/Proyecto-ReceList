@@ -100,7 +100,7 @@ const EditPerfil = ({ showModal, setShowModal }) => {
                           <div
                             className="rounded-circle mx-auto mb-3"
                             style={{
-                              backgroundImage: `url(${perfil.avatar || 'https://via.placeholder.com/200'})`,
+                              backgroundImage: `url(${perfil.avatar || 'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg'})`,
                               width: '200px',
                               height: '200px',
                               backgroundSize: 'cover',

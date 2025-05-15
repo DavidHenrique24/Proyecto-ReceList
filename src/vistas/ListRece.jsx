@@ -30,8 +30,7 @@ const ListRece = () => {
       setUsuario(user);
 
       const { data } = await supabase.from("recetas").select("*");
-       setRecetas(data);
-      
+      setRecetas(data);
     };
 
     fetchUsuarioYRecetas();
@@ -69,9 +68,6 @@ const ListRece = () => {
     }
   };
 
-
-
-
   // Renderizado del componente
   return (
     <main className="container mt-5 px-1">
@@ -84,21 +80,27 @@ const ListRece = () => {
             <li className="nav-item ">
               {/* Botón para ver todas las recetas */}
               <button
-                className={`nav-link ${filtroActivo === "todas" ? "active" : ""}`}
+                className={`nav-link ${
+                  filtroActivo === "todas" ? "active" : ""
+                }`}
                 onClick={() => setFiltroActivo("todas")}
               >
                 Todas Las Recetas
               </button>
             </li>
-            <li className="nav-item w-50 ">
-              {/* Botón para ver solo las recetas del usuario */}
-              <button
-                className={`nav-link ${filtroActivo === "mias" ? "active" : ""}`}
-                onClick={() => setFiltroActivo("mias")}
-              >
-                Mis Recetas
-              </button>
-            </li>
+            {/* Solo chef puede subir  */}
+            {usuario && usuario.role === "chef" && (
+              <li className="nav-item w-50">
+                <button
+                  className={`nav-link ${
+                    filtroActivo === "mias" ? "active" : ""
+                  }`}
+                  onClick={() => setFiltroActivo("mias")}
+                >
+                  Mis Recetas
+                </button>
+              </li>
+            )}
           </ul>
         </div>
       </div>
@@ -107,9 +109,16 @@ const ListRece = () => {
       <div className="border border-top-0 p-3">
         <div className="row">
           <div className="col-12 col-sm-4 mb-3">
-            <Link to={"/nuevoRece"}>
-              <button className="btn btn-primary w-100">Subir receta</button>
-            </Link>
+            {/* Si es chef se ve, si no esta debilitado */}
+            {usuario && usuario.role === "chef" ? (
+              <Link to={"/nuevoRece"}>
+                <button className="btn btn-primary w-100">Subir receta</button>
+              </Link>
+            ) : (
+              <button className="btn btn-secondary w-100" disabled>
+                Subir receta
+              </button>
+            )}
           </div>
 
           {/* Input para buscar recetas */}
@@ -150,15 +159,17 @@ const ListRece = () => {
                       style={{ height: "300px", objectFit: "cover" }}
                     />
                   </Link>
-    
+
                   <div className="card-body">
                     <h5 className="card-title">{receta.titulo}</h5>
                     <p className="card-text">{receta.descripcion}</p>
                     <p className="text-muted">
-                      <small>{new Date(receta.created_at).toLocaleDateString()}</small>
+                      <small>
+                        {new Date(receta.created_at).toLocaleDateString()}
+                      </small>
                     </p>
                   </div>
-                
+
                   <div className="card-footer d-flex justify-content-between align-items-center">
                     <button
                       className="btn btn-sm icono"
@@ -166,24 +177,24 @@ const ListRece = () => {
                     >
                       {receta.likes} <i className="bi bi-heart"></i>
                     </button>
-                    
-                    {/* Si el usuario actual es el autor o un admin, puede editar y borrar */}
-{usuario && (usuario.role === "chef"|| usuario.role === "admin") && (
-  <div className="d-flex gap-1">
-    <Link to={`/editRece/${receta.id}`}>
-      <button className="btn btn-sm icono">
-        <i className="bi bi-pencil"></i>
-      </button>
-    </Link>
-    <button
-      className="btn btn-sm icono"
-      onClick={() => deleteReceta(receta.id)}
-    >
-      <i className="bi bi-trash"></i>
-    </button>
-  </div>
-)}
 
+                    {/* Si el usuario actual es el autor o un admin, puede editar y borrar */}
+                    {usuario &&
+                      (usuario.role === "chef" || usuario.role === "admin") && (
+                        <div className="d-flex gap-1">
+                          <Link to={`/editRece/${receta.id}`}>
+                            <button className="btn btn-sm icono">
+                              <i className="bi bi-pencil"></i>
+                            </button>
+                          </Link>
+                          <button
+                            className="btn btn-sm icono"
+                            onClick={() => deleteReceta(receta.id)}
+                          >
+                            <i className="bi bi-trash"></i>
+                          </button>
+                        </div>
+                      )}
                   </div>
                 </div>
               </div>

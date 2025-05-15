@@ -38,6 +38,8 @@ const Header = () => {
 
   const haySesion = user && user.nombre;
 
+console.log("Usuario logueado:", user);
+
 
   return (
     <>
@@ -91,6 +93,7 @@ const Header = () => {
                     <ul className="dropdown-menu show position-absolute" style={{ left: "-100px", width: "180px" }}>
                       <li className="text-dark text-center p-2">
                         <p className="mb-0 fw-bold">{user.nombre}</p>
+                        <p className="mb-0 ">{user.rol}</p>
                       </li>
                       <li><hr className="dropdown-divider" /></li>
                       <li>
