@@ -110,7 +110,7 @@ const ListRece = () => {
         <div className="row">
           <div className="col-12 col-sm-4 mb-3">
             {/* Si es chef se ve, si no esta debilitado */}
-            {usuario && usuario.role === "chef" ? (
+            {usuario && usuario.role == "chef" ? (
               <Link to={"/nuevoRece"}>
                 <button className="btn btn-primary w-100">Subir receta</button>
               </Link>

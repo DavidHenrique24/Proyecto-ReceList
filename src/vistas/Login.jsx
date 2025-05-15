@@ -44,7 +44,8 @@ const Login = () => {
         ...data.user,
         rol: userData?.rol,
         nombre: userData?.nombre,
-        avatar: userData?.avatar
+        avatar: userData?.avatar,
+        email: data.user.email 
       });
 
       navigate('/listRece');

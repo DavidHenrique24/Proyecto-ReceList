@@ -1,33 +1,68 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import  supabase  from '../utils/supabase'
 
 const UsuAdmin = () => {
-  const [usuarios, setUsuarios] = useState([
-    {
-      imagen: 'https://randomuser.me/api/portraits/men/1.jpg',
-      nombre: 'Juan',
-      email: 'juan.perez@example.com',
-      rol: 'Admin',
-      fechaRegistro: '2023-01-15',
-      activo: 'Sí',
-    },
-    {
-      imagen: 'https://randomuser.me/api/portraits/men/2.jpg',
-      nombre: 'María',
-      email: 'maria.garcia@example.com',
-      rol: 'Chef',
-      fechaRegistro: '2023-02-18',
-      activo: 'No',
-    },
-  ]);
+  const [usuarios, setUsuarios] = useState([])
+  const [cargando, setCargando] = useState(true)
+
+  // Cargar usuarios al montar el componente
+  useEffect(() => {
+    const fetchUsuarios = async () => {
+      const { data, error } = await supabase
+        .from('usuarios')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (error) {
+        console.error('Error al cargar usuarios:', error)
+      } else {
+        setUsuarios(data)
+      }
+      setCargando(false)
+    }
+
+    fetchUsuarios()
+  }, [])
 
   const manejarCambio = (indice, campo, valor) => {
-    setUsuarios(prevUsuarios => {
-      const nuevosUsuarios = [...prevUsuarios];
-      nuevosUsuarios[indice] = { ...nuevosUsuarios[indice], [campo]: valor };
-      return nuevosUsuarios;
-    });
-  };
+    setUsuarios(prev => {
+      const copia = [...prev]
+      copia[indice] = { ...copia[indice], [campo]: valor }
+      return copia
+    })
+  }
+
+  const actualizarUsuario = async (usuario) => {
+    const { id, ...campos } = usuario
+
+    const { error } = await supabase
+      .from('usuarios')
+      .update(campos)
+      .eq('id', id)
+
+    if (error) {
+      alert('Error al actualizar: ' + error.message)
+    } else {
+      alert('Usuario actualizado')
+    }
+  }
+
+  const borrarUsuario = async (id) => {
+    const { error } = await supabase
+      .from('usuarios')
+      .delete()
+      .eq('id', id)
+
+    if (error) {
+      alert('Error al borrar: ' + error.message)
+    } else {
+      setUsuarios(prev => prev.filter(u => u.id !== id))
+      alert('Usuario borrado')
+    }
+  }
+
+  if (cargando) return <p className='m-5'>Cargando usuarios...</p>
 
   return (
     <main className='d-flex flex-column min-vh-100'>
@@ -56,17 +91,15 @@ const UsuAdmin = () => {
                   <th>Nombre</th>
                   <th>Email</th>
                   <th>Rol</th>
-                  <th>Fecha de Registro</th>
-                  <th>Activo</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {usuarios.map((usuario, indice) => (
-                  <tr key={indice}>
+                  <tr key={usuario.id}>
                     <td>
                       <div className="containerImagen">
-                        <div className="d-flex align-items-end justify-content-end" style={{ backgroundImage: `url(${usuario.imagen})`, width: '70px', height: '70px', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                        <div className="d-flex align-items-end justify-content-end" style={{ backgroundImage: `url(${usuario.avatar})`, width: '70px', height: '70px', backgroundSize: 'cover', backgroundPosition: 'center' }}>
                           <i className="btn btn-success btn-sm rounded-circle bi bi-pencil" style={{ fontSize: '10px' }}></i>
                         </div>
                       </div>
@@ -84,18 +117,10 @@ const UsuAdmin = () => {
                         <option value="Chef">Chef</option>
                       </select>
                     </td>
+                
                     <td>
-                      <input type="date" className="form-control form-control-sm" value={usuario.fechaRegistro} onChange={(e) => manejarCambio(indice, 'fechaRegistro', e.target.value)} />
-                    </td>
-                    <td>
-                      <select className="form-control form-control-sm" value={usuario.activo} onChange={(e) => manejarCambio(indice, 'activo', e.target.value)}>
-                        <option value="Sí">Sí</option>
-                        <option value="No">No</option>
-                      </select>
-                    </td>
-                    <td>
-                      <button className="btn btn-sm btn-success">Actualizar</button>
-                      <i className="btn btn-sm btn-outline-danger bi bi-trash3 ms-2"></i>
+                      <button className="btn btn-sm btn-success" onClick={() => actualizarUsuario(usuario)}>Actualizar</button>
+                      <i className="btn btn-sm btn-outline-danger bi bi-trash3 ms-2" onClick={() => borrarUsuario(usuario.id)}></i>
                     </td>
                   </tr>
                 ))}
@@ -105,7 +130,7 @@ const UsuAdmin = () => {
         </div>
       </div>
     </main>
-  );
+  )
 }
 
-export default UsuAdmin;
+export default UsuAdmin
