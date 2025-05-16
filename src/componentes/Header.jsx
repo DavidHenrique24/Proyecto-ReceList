@@ -38,7 +38,7 @@ const Header = () => {
 
   const haySesion = user && user.nombre;
 
-console.log("Usuario logueado:", user);
+
 
 
   return (

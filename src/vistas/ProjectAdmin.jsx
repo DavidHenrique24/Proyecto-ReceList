@@ -44,7 +44,8 @@ const ProjectAdmin = () => {
     if (error) {
       console.error('Error al actualizar la receta:', error);
     } else {
-      console.log('Receta actualizada correctamente');
+        alert(`Receta actualizada correctamente`);
+      
     }
   };
 
@@ -74,7 +75,7 @@ const ProjectAdmin = () => {
                   <th>Imagen</th>
                   <th>Título</th>
                   <th>Descripción</th>
-                  <th>Created at</th>
+                  <th>Fecha de Creacion</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -110,12 +111,13 @@ const ProjectAdmin = () => {
                       />
                     </td>
                     <td>
-                      <span>{new Date(receta.created_at).toLocaleString()}</span>
+                      <span>{new Date(receta.created_at).toLocaleDateString()}</span>
                     </td>
                     <td>
                       <button
                         className="btn btn-sm btn-success"
                         onClick={() => handleUpdate(receta)}
+                        
                       >
                         Actualizar
                       </button>

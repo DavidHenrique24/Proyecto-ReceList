@@ -36,10 +36,6 @@ const Login = () => {
         setMensaje('Error al obtener el rol del usuario.');
         return;
       }
-
-      console.log('Usuario autenticado:', data.user);
-      console.log('Rol del usuario:', userData?.rol);
-
       setUser({
         ...data.user,
         rol: userData?.rol,
@@ -48,11 +44,8 @@ const Login = () => {
         email: data.user.email 
       });
 
-      navigate('/listRece');
-    } else {
-      setMensaje('Error de autenticación');
-      console.error('No se pudo obtener el usuario');
-    }
+      navigate('/');
+    } 
   };
 
   return (

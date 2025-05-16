@@ -78,8 +78,9 @@ const EditRece = () => {
           <div className="col-12">
             <img
               src={receta.portada}
-              alt="Imagen de la receta"
+              alt=""
               className="img-fluid mb-3"
+              style={{ width: '800px' }}
             />
             <label className="form-label mt-2" htmlFor="portada"><strong>URL Imagen:</strong></label>
             <input
@@ -89,6 +90,7 @@ const EditRece = () => {
               value={receta.portada}
               onChange={handleChange}
               required
+              
             />
           </div>
 
