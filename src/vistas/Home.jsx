@@ -6,7 +6,8 @@ import supabase from "../utils/supabase";
 const Home = () => {
   const [visible, setVisible] = useState(false);
   const [ultimasRecetas, setUltimasRecetas] = useState([]);
-  
+  const [ultimosUsuarios, setUltimosUsuarios] = useState([]);
+
   const { user } = useUser(); // obtenemos el usuario del contexto
 
   // Efecto para animación on scroll
@@ -25,6 +26,23 @@ const Home = () => {
   }, [visible]);
 
 
+  useEffect(() => {
+  const fetchUltimosUsuarios = async () => {
+    const { data, error } = await supabase
+      .from("usuarios")      
+      .select("id, nombre, avatar, created_at")
+      .order("created_at", { ascending: false })
+      .limit(3);
+    
+    if (!error && data) {
+      setUltimosUsuarios(data);
+    }
+  };
+
+  fetchUltimosUsuarios();
+}, []);
+
+
   // Efecto para cargar las 3 últimas recetas
   useEffect(() => {
     const fetchUltimasRecetas = async () => {
@@ -34,8 +52,6 @@ const Home = () => {
         .order("created_at", { ascending: false })
         .limit(3); //Para poner limite de Recetas mostradas
         setUltimasRecetas(data);
-    
-      
     };
 
     if (user) {
@@ -46,13 +62,28 @@ const Home = () => {
   // Vista cuando hay usuario logueado
   if (user) {
     return (
-      <main className="p-5">
-        <div className="text-center mb-5">
-          <h2 className="mb-4">¡Bienvenido/a, {user.nombre}!</h2>
-          <p className="fs-4">Explora las mejores recetas de ReceList</p>
-        </div>
+      <main>
+    
+  <section
+    className="text-white d-flex align-items-center justify-content-center text-center p-5"
+    style={{
+      backgroundImage: 'url("https://i.ytimg.com/vi/fcWqe4umD2I/hq720.jpg")',
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      height: "600px",
+    }}
+  >
+    <div className="container">
+      <p className="fs-4">¡Bienvenido/a, {user.nombre}!</p>
+      <h1 className="display-1 fw-bold mb-4">LAS MEJORES RECETAS<br />EN RECELIST</h1>
+      <Link to="/listRece" className="btn btn-outline-light fs-4 px-5 py-2">
+        Explorar recetas
+      </Link>
+    </div>
+  </section>
 
-        <section>
+
+        <section className="p-5 my-5">
           <h2 className="mb-4">Últimas recetas</h2>
           <div className="row">
             {ultimasRecetas.map((receta) => (
@@ -84,6 +115,66 @@ const Home = () => {
        
           </div>
         </section>
+
+<section
+  className="text-white d-flex align-items-center"
+  style={{
+    backgroundImage:
+      'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url("https://i.ytimg.com/vi/fcWqe4umD2I/hq720.jpg")',
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    width: "100%",
+    minHeight: "600px",
+  }}
+>
+  <div className="container">
+    <div
+      className="p-5 rounded-4 shadow-lg bg-dark bg-opacity-75 text-center mx-auto"
+      style={{ maxWidth: "800px" }}
+    >
+      <h2 className="display-5 fw-bold mb-4">¿Qué es ReceList?</h2>
+      <p className="fs-5">
+        ReceList es tu espacio para descubrir, compartir y guardar recetas de cocina de todo tipo.
+        Tanto si estás comenzando como si ya eres un chef experto, aquí encontrarás inspiración culinaria, 
+        podrás seguir a otros cocineros y mantener tus recetas favoritas siempre a mano. 
+        <strong>¡Únete y cocina con nosotros!</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+
+
+
+  <section className="mt-5">
+  <h2 className="mb-5 text-center">Últimos usuarios registrados</h2>
+  <div className="d-flex justify-content-center gap-4 flex-wrap">
+    {ultimosUsuarios.map((usuario) => (
+      <div 
+        key={usuario.id} 
+        className="card text-center"
+        style={{ width: "250px", minHeight: "300px" }}
+      >
+        <img
+          src={usuario.avatar || "/default-avatar.png"} 
+          alt={usuario.nombre}
+          className="card-img-top rounded-circle mx-auto mt-4"
+          style={{ width: "120px", height: "120px", objectFit: "cover" }}
+        />
+        <div className="card-body">
+          <h5 className="card-title">{usuario.nombre}</h5>
+          <small className="text-muted">
+            {new Date(usuario.created_at).toLocaleDateString()}
+          </small>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+
+
+
       </main>
     );
   }
