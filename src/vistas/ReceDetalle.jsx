@@ -169,7 +169,7 @@ const ReceDetalle = () => {
             </button>
           </Link>
 
-          {usuario && (receta.user_id === usuario.user_id || usuario.rol === "admin") && (
+          {usuario && (receta.user_id === usuario.user_id ) && (
             <div className="d-flex align-items-end">
               <Link to={`/editRece/${id}`}>
                 <button className="btn btn-sm ms-2 icono">

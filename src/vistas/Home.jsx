@@ -64,27 +64,29 @@ const Home = () => {
     return (
       <main>
     
-  <section
-    className="text-white d-flex align-items-center justify-content-center text-center p-5"
-    style={{
-      backgroundImage: 'url("https://i.ytimg.com/vi/fcWqe4umD2I/hq720.jpg")',
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      height: "600px",
-    }}
-  >
-    <div className="container">
-      <p className="fs-4">¡Bienvenido/a, {user.nombre}!</p>
-      <h1 className="display-1 fw-bold mb-4">LAS MEJORES RECETAS<br />EN RECELIST</h1>
-      <Link to="/listRece" className="btn btn-outline-light fs-4 px-5 py-2">
-        Explorar recetas
-      </Link>
-    </div>
-  </section>
+    
+ <section
+  className="text-white d-flex align-items-center justify-content-center text-center p-5"
+  style={{
+    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("https://img.freepik.com/foto-gratis/joven-chef-cocina-pizzeria-cortando-tomates-frescos-pizza-vertical-vertical_166373-6621.jpg?semt=ais_hybrid&w=740")`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    height: "600px",
+  }}
+>
+  <div className="container">
+    <p className="fs-4">¡Bienvenido/a, {user.nombre}!</p>
+    <h1 className="display-1 fw-bold mb-4">LAS MEJORES RECETAS<br />EN RECELIST</h1>
+    <Link to="/listRece" className="btn btn-outline-light fs-4 px-5 py-2">
+      Explorar recetas
+    </Link>
+  </div>
+</section>
+
 
 
         <section className="p-5 my-5">
-          <h2 className="mb-4">Últimas recetas</h2>
+          <h2 className="mb-5 text-center">Últimas recetas</h2>
           <div className="row">
             {ultimasRecetas.map((receta) => (
               <div key={receta.id} className="col-12 col-md-6 col-lg-4 mb-4">
@@ -120,7 +122,7 @@ const Home = () => {
   className="text-white d-flex align-items-center"
   style={{
     backgroundImage:
-      'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url("https://i.ytimg.com/vi/fcWqe4umD2I/hq720.jpg")',
+      'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url("https://static.excelenciasgourmet.com/cdn/ff/1C1_gHiijkVnJ3MbWg6fMTDDTJ_jDtdn6w4mW6L9K38/1721683340/public/2021-08/cocina-restaurante.jpg")',
     backgroundSize: "cover",
     backgroundPosition: "center",
     width: "100%",
@@ -134,11 +136,9 @@ const Home = () => {
     >
       <h2 className="display-5 fw-bold mb-4">¿Qué es ReceList?</h2>
       <p className="fs-5">
-        ReceList es tu espacio para descubrir, compartir y guardar recetas de cocina de todo tipo.
-        Tanto si estás comenzando como si ya eres un chef experto, aquí encontrarás inspiración culinaria, 
-        podrás seguir a otros cocineros y mantener tus recetas favoritas siempre a mano. 
-        <strong>¡Únete y cocina con nosotros!</strong>
-      </p>
+       ReceList es una página web creada por David Henrique, pensada para los amantes de la cocina. Aquí podrás descubrir recetas de todo tipo, compartir las tuyas, editar o eliminar las que hayas publicado, y comentar en las de otros usuarios. Además, si tienes permisos de administrador, contarás con un panel de control para gestionar tanto las recetas como los usuarios.
+        <br />
+       </p>
     </div>
   </div>
 </section>
@@ -171,7 +171,8 @@ const Home = () => {
     ))}
   </div>
 </section>
-
+<br />
+<br />
 
 
 

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import supabase from '../utils/supabase';
+import { useEffect, useState } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import supabase from "../utils/supabase";
 
 const EditRece = () => {
   const { id } = useParams();
@@ -12,13 +12,13 @@ const EditRece = () => {
   useEffect(() => {
     const fetchReceta = async () => {
       const { data, error } = await supabase
-        .from('recetas')
-        .select('*')
-        .eq('id', id)
+        .from("recetas")
+        .select("*")
+        .eq("id", id)
         .single();
 
       if (error) {
-        console.error('Error al cargar la receta:', error.message);
+        console.error("Error al cargar la receta:", error.message);
         return;
       }
 
@@ -39,7 +39,7 @@ const EditRece = () => {
     e.preventDefault();
 
     const { error } = await supabase
-      .from('recetas')
+      .from("recetas")
       .update({
         titulo: receta.titulo,
         descripcion: receta.descripcion,
@@ -48,17 +48,18 @@ const EditRece = () => {
         portada: receta.portada,
         created_at: receta.created_at,
       })
-      .eq('id', id);
+      .eq("id", id);
 
     if (error) {
-      console.error('Error al actualizar receta:', error.message);
+      console.error("Error al actualizar receta:", error.message);
       return;
     }
 
-    navigate('/listRece');
+    navigate("/listRece");
   };
 
-  if (loading) return <p className="text-center">Cargando datos de la receta...</p>;
+  if (loading)
+    return <p className="text-center">Cargando datos de la receta...</p>;
   if (!receta) return <p className="text-center">No se encontró la receta</p>;
 
   return (
@@ -67,35 +68,45 @@ const EditRece = () => {
         <h1 className="m-0">Editar {receta.titulo}</h1>
         <Link to="/listRece">
           <button className="btn btn-outline-secondary">
-            <i className="bi bi-arrow-bar-left" style={{ fontSize: '1em' }}></i> Volver
+            <i className="bi bi-arrow-bar-left" style={{ fontSize: "1em" }}></i>{" "}
+            Volver
           </button>
         </Link>
       </div>
       <br />
 
-      <form onSubmit={handleSubmit} className="form border shadow-sm p-3" noValidate>
+      <form
+        onSubmit={handleSubmit}
+        className="form border shadow-sm p-3"
+        noValidate
+      >
         <div className="row mt-2">
-          <div className="col-12">
+          <div className="col-12 ">
             <img
               src={receta.portada}
               alt=""
-              className="img-fluid mb-3"
-              style={{ width: '800px' }}
+              className="img-fluid mb-3 mx-auto d-block"
+              style={{ width: "1000px" }}
             />
-            <label className="form-label mt-2" htmlFor="portada"><strong>URL Imagen:</strong></label>
+
+            <br />
+            <label className="form-label mt-2" htmlFor="portada">
+              <strong>URL Imagen:</strong>
+            </label>
             <input
               id="portada"
               type="text"
               className="form-control"
-              value={receta.portada}
+              value=""
               onChange={handleChange}
               required
-              
             />
           </div>
 
           <div className="col-12">
-            <label className="form-label mt-2" htmlFor="titulo"><strong>Nombre de la Receta:</strong></label>
+            <label className="form-label mt-2" htmlFor="titulo">
+              <strong>Nombre de la Receta:</strong>
+            </label>
             <input
               id="titulo"
               type="text"
@@ -105,7 +116,9 @@ const EditRece = () => {
               required
             />
 
-            <label className="form-label mt-2" htmlFor="descripcion"><strong>Descripción:</strong></label>
+            <label className="form-label mt-2" htmlFor="descripcion">
+              <strong>Descripción:</strong>
+            </label>
             <textarea
               id="descripcion"
               className="form-control"
@@ -115,7 +128,9 @@ const EditRece = () => {
               required
             ></textarea>
 
-            <label className="form-label mt-2" htmlFor="ingredientes"><strong>Ingredientes:</strong></label>
+            <label className="form-label mt-2" htmlFor="ingredientes">
+              <strong>Ingredientes:</strong>
+            </label>
             <textarea
               id="ingredientes"
               className="form-control"
@@ -125,7 +140,9 @@ const EditRece = () => {
               required
             ></textarea>
 
-            <label className="form-label mt-2" htmlFor="pasos"><strong>Preparación:</strong></label>
+            <label className="form-label mt-2" htmlFor="pasos">
+              <strong>Preparación:</strong>
+            </label>
             <textarea
               id="pasos"
               className="form-control"
@@ -135,18 +152,28 @@ const EditRece = () => {
               required
             ></textarea>
 
-            <label className="form-label mt-2" htmlFor="created_at"><strong>Fecha de Creación:</strong></label>
+            <label className="form-label mt-2" htmlFor="created_at">
+              <strong>Fecha de Creación:</strong>
+            </label>
             <input
               id="created_at"
               type="date"
               className="form-control"
-              value={receta.created_at?.split('T')[0]}
+              value={receta.created_at?.split("T")[0]}
               onChange={handleChange}
               required
             />
 
-            <button type="submit" className="btn btn-success mt-3">Guardar Cambios</button>
-            <button type="button" onClick={() => navigate('/listRece')} className="btn btn-outline-secondary mt-3 ms-2">Cancelar</button>
+            <button type="submit" className="btn btn-success mt-3">
+              Guardar Cambios
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/listRece")}
+              className="btn btn-outline-secondary mt-3 ms-2"
+            >
+              Cancelar
+            </button>
           </div>
         </div>
       </form>
