@@ -80,12 +80,18 @@ const Header = () => {
 
                 {showDropdown && (
                   <ul className="dropdown-menu show position-absolute" style={{ left: "-100px", width: "180px" }}>
+                    
                     <li className="text-dark text-center p-2">
                       <p className="mb-0 fw-bold">{user.nombre}</p>
                       <p className="mb-0 ">{user.rol}</p>
                     </li>
                     <li><hr className="dropdown-divider" /></li>
                     <li><Link to={"/listRece"} className="dropdown-item">Recetas</Link></li>
+                     <li>
+                        <button type="button" className="dropdown-item" onClick={() => setShowModal(true)}>
+                          Editar perfil
+                        </button>
+                      </li>
                     {user.rol === "admin" && (
                       <li><Link to={"/projectAdmin"} className="dropdown-item">Admin Panel</Link></li>
                     )}

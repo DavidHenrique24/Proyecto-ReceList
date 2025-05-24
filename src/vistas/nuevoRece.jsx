@@ -50,10 +50,6 @@ const NuevoRece = () => {
       return;
     }
 
-    if (!usuario) {
-      alert("No se ha podido obtener el usuario autenticado.");
-      return;
-    }
 
     const { error } = await supabase.from("recetas").insert([
       {
@@ -87,13 +83,20 @@ const NuevoRece = () => {
       <br />
 
       <form onSubmit={handleSubmit} className="form border shadow-sm p-3" noValidate>
-        <div className="row mt-2">
+        <div className="row mt-2 mb-3">
           <div className="col-12">
             <img
               src={formData.urlImagen}
-              alt="Imagen de la receta"
-              className="img-fluid mb-3"
+              alt=""
+              className="img-fluid text-center mb-3 mx-auto d-block rounded"
+  style={{
+    width: 600,
+    height: 400,
+    objectFit: "cover",
+    borderRadius: 8
+  }}
             />
+            <br />
             <label className="form-label mt-2" htmlFor="urlImagen">
               <strong>URL Imagen: </strong>
             </label>

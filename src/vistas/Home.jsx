@@ -28,15 +28,15 @@ const Home = () => {
 
   useEffect(() => {
   const fetchUltimosUsuarios = async () => {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("usuarios")      
       .select("id, nombre, avatar, created_at")
       .order("created_at", { ascending: false })
       .limit(3);
     
-    if (!error && data) {
+    
       setUltimosUsuarios(data);
-    }
+    
   };
 
   fetchUltimosUsuarios();

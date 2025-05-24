@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import supabase from "../utils/supabase";
-import Comentarios from "../componentes/comentarios";
+import Comentarios from "../componentes/comentarios.jsx";
 
 const ReceDetalle = () => {
   const [receta, setReceta] = useState(null);
@@ -68,9 +68,19 @@ const ReceDetalle = () => {
         <h1 className="mt-4">{receta.titulo}</h1>
 
         <div className="row mt-2">
-          <div className="col-12 text-center mb-3">
-            <img src={receta.portada} alt={receta.titulo} className="img-fluid w-100 mx-auto rounded" />
-          </div>
+         <div className="col-12 text-center mb-3">
+  <img
+    src={receta.portada || "/imagenesProject/fotoDefault.jpg"}
+    alt=""
+    className="mx-auto rounded"
+    style={{
+      width: "800px",
+      height: "500px",
+      objectFit: "cover"
+    }}
+  />
+</div>
+
           <div className="col-12">
             <p><strong>Fecha de creación:</strong> {new Date(receta.created_at).toLocaleDateString()}</p>
             <p><strong>Descripción:</strong> {receta.descripcion}</p>

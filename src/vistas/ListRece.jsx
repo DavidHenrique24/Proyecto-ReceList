@@ -152,9 +152,9 @@ const ListRece = () => {
                   {/* Imagen de la receta con link al detalle */}
                   <Link to={`/receDetalle/${receta.id}`}>
                     <img
-                      src={receta.portada}
+                       src={receta.portada || "/imagenesProject/fotoDefault.jpg"}
                       className="card-img-top"
-                      alt={receta.titulo}
+                      alt=""
                       style={{ height: "300px", objectFit: "cover" }}
                     />
                   </Link>

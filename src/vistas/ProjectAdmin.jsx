@@ -24,7 +24,7 @@ const ProjectAdmin = () => {
   }, []);
 
   // Función para manejar cambios en los campos de las recetas
-  const handleChange = (id, campo, valor) => {
+  const manejasCambio = (id, campo, valor) => {
     const nuevasRecetas = recetas.map(receta =>
       receta.id === id ? { ...receta, [campo]: valor } : receta
     );
@@ -32,20 +32,38 @@ const ProjectAdmin = () => {
   };
 
   // Función para actualizar la receta en Supabase
-  const handleUpdate = async (receta) => {
+  const actualizarReceta = async (receta) => {
     const { error } = await supabase
       .from('recetas')
       .update({
         titulo: receta.titulo,
         descripcion: receta.descripcion,
+        portada: receta.portada,   // actualizar también la URL de la imagen
       })
       .eq('id', receta.id);
 
     if (error) {
       console.error('Error al actualizar la receta:', error);
     } else {
-        alert(`Receta actualizada correctamente`);
-      
+      alert(`Receta actualizada correctamente`);
+    }
+  };
+
+  // Función para eliminar una receta
+  const eliminarReceta = async (id) => {
+    if (!window.confirm('¿Estás seguro de que quieres eliminar esta receta?')) return;
+
+    const { error } = await supabase
+      .from('recetas')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('Error al eliminar la receta:', error);
+    } else {
+      // Actualizar el estado local para eliminar la receta de la lista
+      setRecetas(recetas.filter(receta => receta.id !== id));
+      alert('Receta eliminada correctamente');
     }
   };
 
@@ -83,23 +101,36 @@ const ProjectAdmin = () => {
                 {recetas.map((receta) => (
                   <tr key={receta.id}>
                     <td>
-                      <div
-                        className="containerImagen"
-                        style={{
-                          backgroundImage: `url(${receta.portada})`,
-                          width: '90px',
-                          height: '90px',
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'center',
-                        }}
-                      ></div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div
+                          className="containerImagen"
+                          style={{
+                            backgroundImage: `url(${receta.portada || '/imagenesProject/fotoDefault.jpg'})`,
+                            width: '120px',
+                            height: '90px',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            borderRadius: '6px',
+                            border: '1px solid #ddd',
+                          }}
+                        ></div>
+                        <input
+                          type="text"
+                          className="form-control form-control-sm"
+                          value={receta.portada || ''}
+                          placeholder="URL de la imagen"
+                          onChange={(e) => manejasCambio(receta.id, 'portada', e.target.value)}
+                          style={{ maxWidth: '300px' }}
+                        />
+                      </div>
                     </td>
+
                     <td>
                       <input
                         type="text"
                         className="form-control form-control-sm"
                         value={receta.titulo}
-                        onChange={(e) => handleChange(receta.id, 'titulo', e.target.value)}
+                        onChange={(e) => manejasCambio(receta.id, 'titulo', e.target.value)}
                       />
                     </td>
                     <td>
@@ -107,7 +138,7 @@ const ProjectAdmin = () => {
                         type="text"
                         className="form-control form-control-sm"
                         value={receta.descripcion}
-                        onChange={(e) => handleChange(receta.id, 'descripcion', e.target.value)}
+                        onChange={(e) => manejasCambio(receta.id, 'descripcion', e.target.value)}
                       />
                     </td>
                     <td>
@@ -116,12 +147,17 @@ const ProjectAdmin = () => {
                     <td>
                       <button
                         className="btn btn-sm btn-success"
-                        onClick={() => handleUpdate(receta)}
-                        
+                        onClick={() => actualizarReceta(receta)}
                       >
                         Actualizar
                       </button>
-                      <i className="btn btn-sm btn-outline-danger bi bi-trash3 ms-2"></i>
+                      <button
+                        className="btn btn-sm btn-outline-danger ms-2"
+                        onClick={() => eliminarReceta(receta.id)}
+                        title="Eliminar receta"
+                      >
+                        <i className="bi bi-trash3"></i>
+                      </button>
                     </td>
                   </tr>
                 ))}

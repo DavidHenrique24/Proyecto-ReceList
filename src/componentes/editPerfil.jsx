@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import supabase from '../utils/supabase'; // Asegúrate de que la ruta sea correcta
+import supabase from '../utils/supabase';
 import { useUser } from "../componentes/userProvider";
 
 const EditPerfil = ({ showModal, setShowModal }) => {
-  const { user, setUser } = useUser(); // Asumí que estás accediendo a 'user' desde el context
+  const { user, setUser } = useUser();
 
   const [perfil, setPerfil] = useState({
     nombre: '',
     avatar: '',
     email: '',
-    pass: ''
+    pass: '',
+    rol: '' // Añadido el campo rol
   });
 
   useEffect(() => {
@@ -21,7 +22,7 @@ const EditPerfil = ({ showModal, setShowModal }) => {
 
         const { data } = await supabase
           .from('usuarios')
-          .select('nombre, avatar')
+          .select('nombre, avatar, rol') // Seleccionamos también el rol
           .eq('user_id', user.id)
           .single();
 
@@ -29,7 +30,8 @@ const EditPerfil = ({ showModal, setShowModal }) => {
           setPerfil(prev => ({
             ...prev,
             nombre: data.nombre || '',
-            avatar: data.avatar || ''
+            avatar: data.avatar || '',
+            rol: data.rol || ''
           }));
         }
       }
@@ -68,14 +70,28 @@ const EditPerfil = ({ showModal, setShowModal }) => {
         .insert({
           user_id: user.id,
           nombre: perfil.nombre,
-          avatar: perfil.avatar,
-          activo: true
+          avatar: perfil.avatar
         });
     }
 
     if (!resultado.error) {
       alert('Perfil actualizado correctamente');
-      setUser({ ...user, nombre: perfil.nombre, avatar: perfil.avatar }); // Actualiza el estado global
+
+      // Recuperamos los datos actualizados con el rol
+      const { data: nuevoPerfil } = await supabase
+        .from('usuarios')
+        .select('nombre, avatar, rol')
+        .eq('user_id', user.id)
+        .single();
+
+      // Actualizamos el usuario global
+      setUser({
+        ...user,
+        nombre: nuevoPerfil.nombre,
+        avatar: nuevoPerfil.avatar,
+        rol: nuevoPerfil.rol
+      });
+
       setShowModal(false);
     }
   };
@@ -124,6 +140,10 @@ const EditPerfil = ({ showModal, setShowModal }) => {
                             <div>
                               <label htmlFor="pass" className="form-label">Contraseña</label>
                               <input id="pass" type="password" className="form-control" value={perfil.pass} onChange={handleChange} placeholder="Nueva contraseña" />
+                            </div>
+                            <div>
+                              <label className="form-label">Rol</label>
+                              <input type="text" className="form-control" value={perfil.rol} disabled />
                             </div>
                           </div>
                         </div>

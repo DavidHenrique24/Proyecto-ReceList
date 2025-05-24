@@ -22,7 +22,6 @@ const EditRece = () => {
       }
 
       setReceta(data);
-      setLoading(false);
     };
 
     fetchReceta();
@@ -32,6 +31,7 @@ const EditRece = () => {
   const handleChange = (e) => {
     setReceta({ ...receta, [e.target.id]: e.target.value });
   };
+  
 
   // Enviar formulario
   const handleSubmit = async (e) => {
@@ -57,8 +57,7 @@ const EditRece = () => {
     navigate("/listRece");
   };
 
-  if (loading)
-    return <p className="text-center">Cargando datos de la receta...</p>;
+  // Si aún no hay datos cargados
   if (!receta) return <p className="text-center">No se encontró la receta</p>;
 
   return (
@@ -80,15 +79,21 @@ const EditRece = () => {
         noValidate
       >
         <div className="row mt-2">
-          <div className="col-12 ">
-            <img
-              src={receta.portada}
-              alt=""
-              className="img-fluid mb-3 mx-auto d-block"
-              style={{ width: "1000px" }}
-            />
+          <div className="col-12">
+         <img
+  src={receta.portada}
+  alt=""
+  className="img-fluid mb-3 mx-auto d-block"
+  style={{
+    width: "600px",
+    height: "400px",
+    objectFit: "cover",
+    borderRadius: "8px",
+  }}
+/>
 
-            <br />
+
+            {/* URL Imagen */}
             <label className="form-label mt-2" htmlFor="portada">
               <strong>URL Imagen:</strong>
             </label>
@@ -96,13 +101,14 @@ const EditRece = () => {
               id="portada"
               type="text"
               className="form-control"
-              value=""
+              value={receta.portada}
               onChange={handleChange}
               required
             />
           </div>
 
           <div className="col-12">
+            {/* Título */}
             <label className="form-label mt-2" htmlFor="titulo">
               <strong>Nombre de la Receta:</strong>
             </label>
@@ -115,6 +121,7 @@ const EditRece = () => {
               required
             />
 
+            {/* Descripción */}
             <label className="form-label mt-2" htmlFor="descripcion">
               <strong>Descripción:</strong>
             </label>
@@ -127,6 +134,7 @@ const EditRece = () => {
               required
             ></textarea>
 
+            {/* Ingredientes */}
             <label className="form-label mt-2" htmlFor="ingredientes">
               <strong>Ingredientes:</strong>
             </label>
@@ -139,6 +147,7 @@ const EditRece = () => {
               required
             ></textarea>
 
+            {/* Pasos */}
             <label className="form-label mt-2" htmlFor="pasos">
               <strong>Preparación:</strong>
             </label>
@@ -151,6 +160,7 @@ const EditRece = () => {
               required
             ></textarea>
 
+            {/* Fecha */}
             <label className="form-label mt-2" htmlFor="created_at">
               <strong>Fecha de Creación:</strong>
             </label>
@@ -163,6 +173,7 @@ const EditRece = () => {
               required
             />
 
+            {/* Botones */}
             <button type="submit" className="btn btn-success mt-3">
               Guardar Cambios
             </button>

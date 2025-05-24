@@ -1,25 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import  supabase  from '../utils/supabase'
+import supabase from '../utils/supabase'
 
 const UsuAdmin = () => {
   const [usuarios, setUsuarios] = useState([])
-  const [cargando, setCargando] = useState(true)
 
-  // Cargar usuarios al montar el componente
   useEffect(() => {
     const fetchUsuarios = async () => {
-      const { data, error } = await supabase
+      const { data  } = await supabase
         .from('usuarios')
         .select('*')
-        .order('created_at', { ascending: false })
-
-      if (error) {
-        console.error('Error al cargar usuarios:', error)
-      } else {
+        .order('created_at')
         setUsuarios(data)
-      }
-      setCargando(false)
     }
 
     fetchUsuarios()
@@ -42,13 +34,14 @@ const UsuAdmin = () => {
       .eq('id', id)
 
     if (error) {
-      alert('Error al actualizar: ' + error.message)
+      alert('Error al actualizar')
     } else {
       alert('Usuario actualizado')
     }
   }
 
   const borrarUsuario = async (id) => {
+      if (!window.confirm('¿Estás seguro de que quieres eliminar esta receta?')) return;
     const { error } = await supabase
       .from('usuarios')
       .delete()
@@ -61,8 +54,6 @@ const UsuAdmin = () => {
       alert('Usuario borrado')
     }
   }
-
-  if (cargando) return <p className='m-5'>Cargando usuarios...</p>
 
   return (
     <main className='d-flex flex-column min-vh-100'>
@@ -89,7 +80,7 @@ const UsuAdmin = () => {
                 <tr>
                   <th>Imagen</th>
                   <th>Nombre</th>
-                  <th>Email</th>
+          
                   <th>Rol</th>
                   <th>Acciones</th>
                 </tr>
@@ -97,30 +88,49 @@ const UsuAdmin = () => {
               <tbody>
                 {usuarios.map((usuario, indice) => (
                   <tr key={usuario.id}>
-                    <td>
-                      <div className="containerImagen">
-                        <div className="d-flex align-items-end justify-content-end" style={{ backgroundImage: `url(${usuario.avatar})`, width: '70px', height: '70px', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-                          <i className="btn btn-success btn-sm rounded-circle bi bi-pencil" style={{ fontSize: '10px' }}></i>
-                        </div>
-                      </div>
+                    <td style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <img
+                        src={usuario.avatar || "https://via.placeholder.com/70"}
+                        alt=""
+                        style={{ width: '70px', height: '70px', objectFit: 'cover', borderRadius: '50%' }}
+                      />
+                      <input
+                        type="text"
+                        className="form-control form-control-sm"
+                        value={usuario.avatar || ''}
+                        placeholder="URL de la imagen"
+                        onChange={(e) => manejarCambio(indice, 'avatar', e.target.value)}
+                        style={{ maxWidth: '300px' }}
+                      />
                     </td>
                     <td>
-                      <input type="text" className="form-control form-control-sm" value={usuario.nombre} onChange={(e) => manejarCambio(indice, 'nombre', e.target.value)} />
+                      <input
+                        type="text"
+                        className="form-control form-control-sm"
+                        value={usuario.nombre}
+                        onChange={(e) => manejarCambio(indice, 'nombre', e.target.value)}
+                      />
                     </td>
+                 
                     <td>
-                      <input type="email" className="form-control form-control-sm" value={usuario.email} onChange={(e) => manejarCambio(indice, 'email', e.target.value)} />
-                    </td>
-                    <td>
-                      <select className="form-control form-control-sm" value={usuario.rol} onChange={(e) => manejarCambio(indice, 'rol', e.target.value)}>
-                        <option value="Admin">Admin</option>
-                        <option value="Registrado">Registrado</option>
-                        <option value="Chef">Chef</option>
+                      <select
+                        className="form-control form-control-sm"
+                        value={usuario.rol}
+                        onChange={(e) => manejarCambio(indice, 'rol', e.target.value)}
+                      >
+                        <option value="Admin">admin</option>
+                        <option value="user">user</option>
+                        <option value="chef">chef</option>
                       </select>
                     </td>
-                
                     <td>
                       <button className="btn btn-sm btn-success" onClick={() => actualizarUsuario(usuario)}>Actualizar</button>
-                      <i className="btn btn-sm btn-outline-danger bi bi-trash3 ms-2" onClick={() => borrarUsuario(usuario.id)}></i>
+                      <i
+                        className="btn btn-sm btn-outline-danger bi bi-trash3 ms-2"
+                        onClick={() => borrarUsuario(usuario.id)}
+                        role="button"
+                        
+                      ></i>
                     </td>
                   </tr>
                 ))}
