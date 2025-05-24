@@ -6,7 +6,6 @@ const EditRece = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [receta, setReceta] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   // Cargar receta al iniciar
   useEffect(() => {

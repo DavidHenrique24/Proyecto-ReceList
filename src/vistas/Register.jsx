@@ -40,13 +40,12 @@ const Register = () => {
     } else if (authData) {
       // Actualizar los datos del usuario en la tabla 'usuarios'
       const { data: updateData, error: updateError } = await supabase
-        .from('usuarios') // Asegúrate de que la tabla se llame 'usuarios'
+        .from('usuarios') 
         .upsert({
           user_id: authData.user.id,          
           nombre: primerNombre || null,        
           avatar: imagen || null,              
-          rol: 'user',                        
-          activo: true                          
+          rol: 'user',                                                 
         });
 
       if (updateError) {

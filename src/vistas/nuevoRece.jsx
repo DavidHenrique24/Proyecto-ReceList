@@ -1,66 +1,171 @@
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import supabase from "../utils/supabase";
 
 const NuevoRece = () => {
+  const navigate = useNavigate();
+
+  const [usuario, setUsuario] = useState(null);
+  const [formData, setFormData] = useState({
+    urlImagen: "https://img.freepik.com/vector-premium/imagen-vectorial-icono-album-puede-utilizar-fotografia_120816-250318.jpg",
+    nombre: "",
+    descripcion: "",
+    ingredientes: "",
+    preparacion: "",
+  });
+
+  // Obtener usuario actual al montar el componente
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+
+      if (error) {
+        console.error("Error obteniendo usuario:", error.message);
+        return;
+      }
+
+      setUsuario(user);
+    };
+
+    fetchUser();
+  }, []);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (
+      !formData.nombre ||
+      !formData.descripcion ||
+      !formData.ingredientes ||
+      !formData.preparacion
+    ) {
+      alert("Por favor, completa todos los campos obligatorios.");
+      return;
+    }
+
+    if (!usuario) {
+      alert("No se ha podido obtener el usuario autenticado.");
+      return;
+    }
+
+    const { error } = await supabase.from("recetas").insert([
+      {
+        portada: formData.urlImagen,
+        titulo: formData.nombre,
+        descripcion: formData.descripcion,
+        ingredientes: formData.ingredientes,
+        pasos: formData.preparacion,
+        user_id: usuario.id,
+      },
+    ]);
+
+    if (error) {
+      alert("Error al guardar la receta: " + error.message);
+      return;
+    }
+
+    navigate("/listRece");
+  };
+
   return (
     <main className="container px-5">
       <div className="container d-flex justify-content-between align-items-center mt-5">
         <h1 className="m-0">Crear Receta</h1>
         <Link to="/listRece">
           <button className="btn btn-outline-secondary">
-            <i className="bi bi-arrow-bar-left" style={{ fontSize: '1em' }}></i> Volver
+            <i className="bi bi-arrow-bar-left" style={{ fontSize: "1em" }}></i> Volver
           </button>
         </Link>
       </div>
-      <br/>
+      <br />
 
-      <form action="" className="form border shadow-sm p-3" noValidate>
+      <form onSubmit={handleSubmit} className="form border shadow-sm p-3" noValidate>
         <div className="row mt-2">
           <div className="col-12">
             <img
-              src="https://www.bbva.com/wp-content/uploads/2023/04/cocina-de-aprovechamiento.jpg"
+              src={formData.urlImagen}
               alt="Imagen de la receta"
               className="img-fluid mb-3"
             />
-            <label className="form-label mt-2" htmlFor="urlImagen"><strong>URL Imagen: </strong></label>
-            <input id="urlImagen" type="text" className="form-control" value="http://enlaceImagen.com" required />
-            <div className="invalid-feedback">Por favor, ingresa una URL válida.</div>
+            <label className="form-label mt-2" htmlFor="urlImagen">
+              <strong>URL Imagen: </strong>
+            </label>
+            <input
+              id="urlImagen"
+              type="text"
+              className="form-control"
+              value={formData.urlImagen}
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <div className="col-12">
-            <label className="form-label mt-2" htmlFor="nombre"><strong>Nombre de la Receta: </strong></label>
-            <input required id="nombre" type="text" value="Nombre Receta" className="form-control" />
-            <div className="invalid-feedback">El nombre es obligatorio.</div>
+            <label className="form-label mt-2" htmlFor="nombre">
+              <strong>Nombre de la Receta: </strong>
+            </label>
+            <input
+              required
+              id="nombre"
+              type="text"
+              value={formData.nombre}
+              className="form-control"
+              onChange={handleChange}
+            />
 
-            <label className="form-label mt-2" htmlFor="descripcion"><strong>Descripción: </strong></label>
-            <textarea id="descripcion" className="form-control" rows="4" required>Breve descripción de la receta.</textarea>
-            <div className="invalid-feedback">La descripción es obligatoria.</div>
+            <label className="form-label mt-2" htmlFor="descripcion">
+              <strong>Descripción: </strong>
+            </label>
+            <textarea
+              id="descripcion"
+              className="form-control"
+              rows="4"
+              required
+              value={formData.descripcion}
+              onChange={handleChange}
+            ></textarea>
 
-            <label className="form-label mt-2" htmlFor="ingredientes"><strong>Ingredientes: </strong></label>
-            <textarea id="ingredientes" className="form-control" rows="4" required>Lista de ingredientes necesarios.</textarea>
-            <div className="invalid-feedback">Los ingredientes son obligatorios.</div>
+            <label className="form-label mt-2" htmlFor="ingredientes">
+              <strong>Ingredientes: </strong>
+            </label>
+            <textarea
+              id="ingredientes"
+              className="form-control"
+              rows="4"
+              required
+              value={formData.ingredientes}
+              onChange={handleChange}
+            ></textarea>
 
-            <label className="form-label mt-2" htmlFor="preparacion"><strong>Preparación: </strong></label>
-            <textarea id="preparacion" className="form-control" rows="6" required>Pasos para preparar la receta.</textarea>
-            <div className="invalid-feedback">La preparación es obligatoria.</div>
+            <label className="form-label mt-2" htmlFor="preparacion">
+              <strong>Preparación: </strong>
+            </label>
+            <textarea
+              id="preparacion"
+              className="form-control"
+              rows="6"
+              required
+              value={formData.preparacion}
+              onChange={handleChange}
+            ></textarea>
 
-            <label className="form-label mt-2" htmlFor="fecha"><strong>Fecha de Creación: </strong></label>
-            <input id="fecha" type="date" className="form-control" required />
-            <div className="invalid-feedback">Por favor, selecciona una fecha.</div>
-
-            {/* Campo para seleccionar la categoría */}
-            <label className="form-label mt-2" htmlFor="categoria"><strong>Categoría: </strong></label>
-            <select id="categoria" className="form-select" required>
-              <option value="">Selecciona una categoría</option>
-              <option value="Plato Principal">Plato Principal</option>
-              <option value="Postre">Postre</option>
-              <option value="Comida Mexicana">Comida Mexicana</option>
-              <option value="Entrante">Entrante</option>
-              <option value="Comida Vegetariana">Comida Vegetariana</option>
-            </select>
-            <div className="invalid-feedback">La categoría es obligatoria.</div>
-
-            <input type="submit" className="btn btn-success mt-3" value="Guardar Cambios" />
-            <input type="submit" className="btn btn-outline-secondary mt-3" value="Cancelar" />
+            <button type="submit" className="btn btn-success mt-3">
+              Crear Receta
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/listRece")}
+              className="btn btn-outline-secondary mt-3 ms-2"
+            >
+              Cancelar
+            </button>
           </div>
         </div>
       </form>

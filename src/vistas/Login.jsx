@@ -13,6 +13,7 @@ const Login = () => {
   const gestionarLogin = async (e) => {
     e.preventDefault();
 
+    //Para sacar los datos de supabase Auth 
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password: contrasena,
@@ -20,22 +21,17 @@ const Login = () => {
 
     if (error) {
       setMensaje('Usuario o contraseña incorrectos');
-      console.error('Error de autenticación:', error.message);
       return;
     }
 
+    // Si el login es exitoso, obtenemos los datos del usuario de la bd usuarios 
     if (data?.user) {
-      const { data: userData, error: userError } = await supabase
+      const { data: userData } = await supabase
         .from('usuarios')
         .select('rol, nombre, avatar')
         .eq('user_id', data.user.id)
         .single();
 
-      if (userError) {
-        console.error('Error al obtener el rol del usuario:', userError.message);
-        setMensaje('Error al obtener el rol del usuario.');
-        return;
-      }
       setUser({
         ...data.user,
         rol: userData?.rol,

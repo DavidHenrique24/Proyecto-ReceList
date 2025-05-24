@@ -30,7 +30,8 @@ const ListRece = () => {
       setUsuario(user);
 
       const { data } = await supabase.from("recetas").select("*");
-      setRecetas(data);
+       setRecetas(data);
+      
     };
 
     fetchUsuarioYRecetas();
@@ -68,6 +69,9 @@ const ListRece = () => {
     }
   };
 
+
+
+
   // Renderizado del componente
   return (
     <main className="container mt-5 px-1">
@@ -76,73 +80,68 @@ const ListRece = () => {
       {/* Navegación para seleccionar filtro */}
       <div className="row mt-4">
         <div className="col-12">
-          <ul className="nav nav-tabs w-200">
-            <li className="nav-item ">
-              {/* Botón para ver todas las recetas */}
-              <button
-                className={`nav-link ${
-                  filtroActivo === "todas" ? "active" : ""
-                }`}
-                onClick={() => setFiltroActivo("todas")}
-              >
-                Todas Las Recetas
-              </button>
-            </li>
-            {/* Solo chef puede subir  */}
-            {usuario && usuario.role === "chef" && (
-              <li className="nav-item w-50">
-                <button
-                  className={`nav-link ${
-                    filtroActivo === "mias" ? "active" : ""
-                  }`}
-                  onClick={() => setFiltroActivo("mias")}
-                >
-                  Mis Recetas
-                </button>
-              </li>
-            )}
-          </ul>
+         <ul className="nav nav-tabs w-200">
+  <li className="nav-item">
+    <button
+      className={`nav-link ${filtroActivo === "todas" ? "active" : ""}`}
+      onClick={() => setFiltroActivo("todas")}
+    >
+      Todas Las Recetas
+    </button>
+  </li>
+
+{usuario &&
+    (usuario.rol === "chef" ||
+      recetas.some((receta) => receta.user_id === usuario.id)) && (
+      <li className="nav-item w-50">
+        <button
+          className={`nav-link ${filtroActivo === "mias" ? "active" : ""}`}
+          onClick={() => setFiltroActivo("mias")}
+        >
+          Mis Recetas
+        </button>
+      </li>
+  )}
+</ul>
+
         </div>
       </div>
 
       {/* Barra de búsqueda y botón para subir receta */}
       <div className="border border-top-0 p-3">
         <div className="row">
+      {usuario &&
+        (usuario.rol === "chef" ||
+          recetas.some((receta) => receta.user_id === usuario.id)) && (
           <div className="col-12 col-sm-4 mb-3">
-            {/* Si es chef se ve, si no esta debilitado */}
-            {usuario && usuario.role == "chef" ? (
-              <Link to={"/nuevoRece"}>
-                <button className="btn btn-primary w-100">Subir receta</button>
-              </Link>
-            ) : (
-              <button className="btn btn-secondary w-100" disabled>
-                Subir receta
-              </button>
-            )}
+            <Link to={"/nuevoRece"}>
+              <button className="btn btn-primary w-100">Subir receta</button>
+            </Link>
           </div>
+        )}
 
-          {/* Input para buscar recetas */}
-          <div className="d-flex col-12 col-sm-8 mb-3">
-            <div className="input-group flex-nowrap">
-              <span className="input-group-text">
-                <i className="bi bi-search"></i>
-              </span>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Buscar receta"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <button
-                className="btn btn-outline-secondary"
-                onClick={() => setSearchTerm("")}
-              >
-                <i className="bi bi-x"></i>
-              </button>
-            </div>
-          </div>
+      {/* Input para buscar recetas */}
+      <div className="d-flex col-12 col-sm-8 mb-3">
+        <div className="input-group flex-nowrap">
+          <span className="input-group-text">
+            <i className="bi bi-search"></i>
+          </span>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Buscar receta"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button
+            className="btn btn-outline-secondary"
+            onClick={() => setSearchTerm("")}
+          >
+            <i className="bi bi-x"></i>
+          </button>
         </div>
+      </div>
+    </div>
 
         {/* Muestra recetas encontradas */}
         <div className="row mt-3">
@@ -153,48 +152,40 @@ const ListRece = () => {
                   {/* Imagen de la receta con link al detalle */}
                   <Link to={`/receDetalle/${receta.id}`}>
                     <img
-                      src={receta.portada || 'https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg'}
+                      src={receta.portada}
                       className="card-img-top"
-                      alt=""
+                      alt={receta.titulo}
                       style={{ height: "300px", objectFit: "cover" }}
                     />
                   </Link>
-
+    
                   <div className="card-body">
                     <h5 className="card-title">{receta.titulo}</h5>
                     <p className="card-text">{receta.descripcion}</p>
                     <p className="text-muted">
-                      <small>
-                        {new Date(receta.created_at).toLocaleDateString()}
-                      </small>
+                      <small>{new Date(receta.created_at).toLocaleDateString()}</small>
                     </p>
                   </div>
-
+                
                   <div className="card-footer d-flex justify-content-between align-items-center">
-                    <button
-                      className="btn btn-sm icono"
-                      onClick={() => handleLike(receta.id, receta.likes)}
-                    >
-                      {receta.likes} <i className="bi bi-heart"></i>
-                    </button>
-
+                    <br />
                     {/* Si el usuario actual es el autor o un admin, puede editar y borrar */}
-                    {usuario &&
-                      (usuario.role === "chef" || usuario.role === "admin") && (
-                        <div className="d-flex gap-1">
-                          <Link to={`/editRece/${receta.id}`}>
-                            <button className="btn btn-sm icono">
-                              <i className="bi bi-pencil"></i>
-                            </button>
-                          </Link>
-                          <button
-                            className="btn btn-sm icono"
-                            onClick={() => deleteReceta(receta.id)}
-                          >
-                            <i className="bi bi-trash"></i>
-                          </button>
-                        </div>
-                      )}
+{usuario && (receta.user_id === usuario.id || usuario.role === "admin") && (
+  <div className="d-flex gap-1">
+    <Link to={`/editRece/${receta.id}`}>
+      <button className="btn btn-sm icono">
+        <i className="bi bi-pencil"></i>
+      </button>
+    </Link>
+    <button
+      className="btn btn-sm icono"
+      onClick={() => deleteReceta(receta.id)}
+    >
+      <i className="bi bi-trash"></i>
+    </button>
+  </div>
+)}
+
                   </div>
                 </div>
               </div>
