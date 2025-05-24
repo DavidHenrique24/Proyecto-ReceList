@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import supabase from "../utils/supabase";
-import Comentarios from '../componentes/comentarios.jsx';
+import Comentarios from './comentarios.jsx';
 
 const ReceDetalle = () => {
   const [receta, setReceta] = useState(null);
