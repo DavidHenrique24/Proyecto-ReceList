@@ -178,7 +178,7 @@ const ListRece = () => {
       </button>
     </Link>
     <button
-      className="btn btn-sm icono"
+      className="btn btn-sm iconoRojo"
       onClick={() => deleteReceta(receta.id)}
     >
       <i className="bi bi-trash"></i>

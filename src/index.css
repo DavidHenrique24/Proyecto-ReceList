@@ -87,6 +87,14 @@
             color: #077bff;
         }
 
+          .iconoRojo{
+            font-size: 1rem;
+        }
+        .iconoRojo:hover{
+            color: #ff073d;
+        }
+
+
 /* Animacion de edicion de perfil */
 @keyframes slideInFromTop {
     0% {

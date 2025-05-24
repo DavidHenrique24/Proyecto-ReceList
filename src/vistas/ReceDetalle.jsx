@@ -58,7 +58,7 @@ const ReceDetalle = () => {
                   <i className="bi bi-pencil"></i>
                 </button>
               </Link>
-              <button className="btn btn-sm ms-2 icono">
+              <button className="btn btn-sm ms-2 iconoRojo">
                 <i className="bi bi-trash"></i>
               </button>
             </div>

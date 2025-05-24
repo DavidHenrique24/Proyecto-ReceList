@@ -8,8 +8,6 @@ const Comentarios = ({ id, usuario }) => {
   const [comentarioIdRespuesta, setComentarioIdRespuesta] = useState(null);
   const [comentarioEditando, setComentarioEditando] = useState(null);
   const [comentarioEditado, setComentarioEditado] = useState("");
-  const [respuestaEditando, setRespuestaEditando] = useState(null);
-  const [respuestaEditada, setRespuestaEditada] = useState("");
 
   const obtenerComentarios = async () => {
     const { data, error } = await supabase
@@ -90,21 +88,6 @@ const Comentarios = ({ id, usuario }) => {
     await obtenerComentarios();
   };
 
-  const editarRespuesta = async (respuestaId) => {
-    if (!respuestaEditada.trim()) return;
-
-    const { error } = await supabase
-      .from("comentarios")
-      .update({ comentario: respuestaEditada })
-      .eq("id", respuestaId);
-
-    if (error) return console.error("Error al editar respuesta:", error.message);
-
-    setRespuestaEditando(null);
-    setRespuestaEditada("");
-    await obtenerComentarios();
-  };
-
   return (
     <section className="mt-4">
       <h4 className="mb-3">Escribe tu comentario</h4>
@@ -147,19 +130,19 @@ const Comentarios = ({ id, usuario }) => {
                 <p className="mb-0">{comentario.comentario}</p>
                 {usuario && (
                   <button className="btn btn-link p-0" onClick={() => setComentarioIdRespuesta(comentario.id)}>
-                    <i className="bi bi-reply"> Responder</i>
+                    <i className="bi bi-reply text-muted"> Responder</i>
                   </button>
                 )}
                 {(usuario && (comentario.usu_id === usuario.id || usuario.rol === "admin")) && (
                   <>
-                    <button className="btn btn-sm btn-outline-danger ms-2" onClick={() => eliminarComentario(comentario.id)}>
-                      <i className="bi bi-trash"></i>
+                    <button className="btn btn-sm ms-2 iconoRojo" onClick={() => eliminarComentario(comentario.id)}>
+                      <i className="bi bi-trash "></i>
                     </button>
-                    <button className="btn btn-sm btn-outline-primary ms-2" onClick={() => {
+                    <button className="btn btn-sm ms-2" onClick={() => {
                       setComentarioEditando(comentario.id);
                       setComentarioEditado(comentario.comentario);
                     }}>
-                      <i className="bi bi-pencil"></i>
+                      <i className="bi bi-pencil icono"></i>
                     </button>
                   </>
                 )}
@@ -185,36 +168,22 @@ const Comentarios = ({ id, usuario }) => {
             )}
 
             {comentario.respuestas?.map((respuesta) => (
-              <div key={respuesta.id} className="mt-3 ms-4 border-start ps-3">
-                <p className="mb-1"><strong>{respuesta.usuarios?.nombre}</strong></p>
-                {respuestaEditando === respuesta.id ? (
-                  <>
-                    <textarea
-                      className="form-control"
-                      value={respuestaEditada}
-                      onChange={(e) => setRespuestaEditada(e.target.value)}
-                    />
-                    <button className="btn btn-success btn-sm mt-2 me-2" onClick={() => editarRespuesta(respuesta.id)}>Guardar</button>
-                    <button className="btn btn-secondary btn-sm mt-2" onClick={() => setRespuestaEditando(null)}>Cancelar</button>
-                  </>
-                ) : (
-                  <>
-                    <p className="mb-0">{respuesta.comentario}</p>
-                    {(usuario && (respuesta.usu_id === usuario.id || usuario.rol === "admin")) && (
-                      <>
-                        <button className="btn btn-sm btn-outline-danger ms-2" onClick={() => eliminarRespuesta(respuesta.id)}>
-                          <i className="bi bi-trash"></i>
-                        </button>
-                        <button className="btn btn-sm btn-outline-primary ms-2" onClick={() => {
-                          setRespuestaEditando(respuesta.id);
-                          setRespuestaEditada(respuesta.comentario);
-                        }}>
-                          <i className="bi bi-pencil"></i>
-                        </button>
-                      </>
-                    )}
-                  </>
-                )}
+              <div key={respuesta.id} className="mt-3 ms-4 border-start ps-3 d-flex">
+                <img
+                  src={respuesta.usuarios?.avatar}
+                  alt={respuesta.usuarios?.nombre}
+                  className="rounded-circle me-3"
+                  style={{ width: "50px", height: "50px", objectFit: "cover" }}
+                />
+                <div>
+                  <p className="mb-1"><strong>{respuesta.usuarios?.nombre}</strong></p>
+                  <p className="mb-0">{respuesta.comentario}</p>
+                  {(usuario && (respuesta.usu_id === usuario.id || usuario.rol === "admin")) && (
+                    <button className="btn btn-sm ms-2 iconoRojo" onClick={() => eliminarRespuesta(respuesta.id)}>
+                      <i className="bi bi-trash "></i>
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
           </div>
