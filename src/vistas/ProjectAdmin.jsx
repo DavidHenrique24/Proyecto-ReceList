@@ -1,39 +1,70 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import supabase from '../utils/supabase'; 
 
 const ProjectAdmin = () => {
-  const [recetas, setRecetas] = useState([
-    {
-      id: 1,
-      imagen: 'https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/737c83a7-c1f9-4c95-8bdc-402e3c5aa011/Derivates/b033b224-6745-4914-9c25-f7f2ead80b9f.jpg',
-      titulo: 'Receta de Pastel',
-      descripcion: 'Deliciosa receta para hacer un pastel de chocolate.',
-      autor: 'Juan Pérez',
-      created_at: '2023-12-12',
-    },
-    {
-      id: 2,
-      imagen: 'https://imagenes.elpais.com/resizer/v2/3KWQUZHLQFGVRIWYQGO3A5WFD4.jpg?auth=f2d14d8886b49351024920c894e7f4b9f518886e962c654538d191ee37e30bac&width=1200',
-      titulo: 'Ensalada César',
-      descripcion: 'Receta fresca y saludable para ensalada César.',
-      autor: 'Juanito estrella',
-      created_at: '2023-12-13',
-    },
-    {
-      id: 3,
-      imagen: 'https://img.hellofresh.com/w_3840,q_auto,f_auto,c_fill,fl_lossy/hellofresh_website/es/cms/SEO/recipes/albondigas-caseras-de-cerdo-con-salsa-barbacoa.jpeg',
-      titulo: 'Cesar enasalada',
-      descripcion: 'Receta fresca y saludable para ensalada César.',
-      autor: 'Duki',
-      created_at: '2023-12-13',
-    },
-  ]);
+  const [recetas, setRecetas] = useState([]);
+  
+  // Función para obtener las recetas desde Supabase
+  const fetchRecetas = async () => {
+    const { data, error } = await supabase
+      .from('recetas')
+      .select('*');
+    
+    if (error) {
+      console.error('Error al obtener recetas:', error);
+    } else {
+      setRecetas(data);
+    }
+  };
 
-  const handleChange = (id, campo, valor) => {
+  // Cargar las recetas cuando el componente se monta
+  useEffect(() => {
+    fetchRecetas();
+  }, []);
+
+  // Función para manejar cambios en los campos de las recetas
+  const manejasCambio = (id, campo, valor) => {
     const nuevasRecetas = recetas.map(receta =>
       receta.id === id ? { ...receta, [campo]: valor } : receta
     );
     setRecetas(nuevasRecetas);
+  };
+
+  // Función para actualizar la receta en Supabase
+  const actualizarReceta = async (receta) => {
+    const { error } = await supabase
+      .from('recetas')
+      .update({
+        titulo: receta.titulo,
+        descripcion: receta.descripcion,
+        portada: receta.portada,   // actualizar también la URL de la imagen
+      })
+      .eq('id', receta.id);
+
+    if (error) {
+      console.error('Error al actualizar la receta:', error);
+    } else {
+      alert(`Receta actualizada correctamente`);
+    }
+  };
+
+  // Función para eliminar una receta
+  const eliminarReceta = async (id) => {
+    if (!window.confirm('¿Estás seguro de que quieres eliminar esta receta?')) return;
+
+    const { error } = await supabase
+      .from('recetas')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('Error al eliminar la receta:', error);
+    } else {
+      // Actualizar el estado local para eliminar la receta de la lista
+      setRecetas(recetas.filter(receta => receta.id !== id));
+      alert('Receta eliminada correctamente');
+    }
   };
 
   return (
@@ -62,8 +93,7 @@ const ProjectAdmin = () => {
                   <th>Imagen</th>
                   <th>Título</th>
                   <th>Descripción</th>
-                  <th>Autor</th>
-                  <th>created_at</th>
+                  <th>Fecha de Creacion</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -71,23 +101,36 @@ const ProjectAdmin = () => {
                 {recetas.map((receta) => (
                   <tr key={receta.id}>
                     <td>
-                      <div
-                        className="containerImagen"
-                        style={{
-                          backgroundImage: `url(${receta.imagen})`,
-                          width: '90px',
-                          height: '90px',
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'center',
-                        }}
-                      ></div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div
+                          className="containerImagen"
+                          style={{
+                            backgroundImage: `url(${receta.portada || '/imagenesProject/fotoDefault.jpg'})`,
+                            width: '120px',
+                            height: '90px',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            borderRadius: '6px',
+                            border: '1px solid #ddd',
+                          }}
+                        ></div>
+                        <input
+                          type="text"
+                          className="form-control form-control-sm"
+                          value={receta.portada || ''}
+                          placeholder="URL de la imagen"
+                          onChange={(e) => manejasCambio(receta.id, 'portada', e.target.value)}
+                          style={{ maxWidth: '300px' }}
+                        />
+                      </div>
                     </td>
+
                     <td>
                       <input
                         type="text"
                         className="form-control form-control-sm"
                         value={receta.titulo}
-                        onChange={(e) => handleChange(receta.id, 'titulo', e.target.value)}
+                        onChange={(e) => manejasCambio(receta.id, 'titulo', e.target.value)}
                       />
                     </td>
                     <td>
@@ -95,23 +138,26 @@ const ProjectAdmin = () => {
                         type="text"
                         className="form-control form-control-sm"
                         value={receta.descripcion}
-                        onChange={(e) => handleChange(receta.id, 'descripcion', e.target.value)}
+                        onChange={(e) => manejasCambio(receta.id, 'descripcion', e.target.value)}
                       />
                     </td>
                     <td>
-                      <span className="form-control form-control-sm" readOnly>{receta.autor}</span>
+                      <span>{new Date(receta.created_at).toLocaleDateString()}</span>
                     </td>
                     <td>
-                      <input
-                        type="date"
-                        className="form-control form-control-sm"
-                        value={receta.created_at}
-                        onChange={(e) => handleChange(receta.id, 'created_at', e.target.value)}
-                      />
-                    </td>
-                    <td>
-                      <button className="btn btn-sm btn-success">Actualizar</button>
-                      <i className="btn btn-sm btn-outline-danger bi bi-trash3 ms-2"></i>
+                      <button
+                        className="btn btn-sm btn-success"
+                        onClick={() => actualizarReceta(receta)}
+                      >
+                        Actualizar
+                      </button>
+                      <button
+                        className="btn btn-sm btn-outline-danger ms-2"
+                        onClick={() => eliminarReceta(receta.id)}
+                        title="Eliminar receta"
+                      >
+                        <i className="bi bi-trash3"></i>
+                      </button>
                     </td>
                   </tr>
                 ))}
