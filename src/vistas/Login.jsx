@@ -32,6 +32,7 @@ const Login = () => {
         .eq('user_id', data.user.id)
         .single();
 
+      //se guarda el usuario en el contexto global
       setUser({
         ...data.user,
         rol: userData?.rol,
@@ -53,32 +54,33 @@ const Login = () => {
           {mensaje && <div className="alert alert-danger">{mensaje}</div>}
 
           <form onSubmit={gestionarLogin}>
-            <div className="mb-3">
-              <label htmlFor="correo-electronico" className="form-label">Correo electrónico</label>
-              <input
-                type="email"
-                className="form-control input-control"
-                id="correo-electronico"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
+  <div className="mb-3">
+    <label htmlFor="correo-electronico" className="form-label">Correo electrónico</label>
+    <input
+      type="email"
+      className="form-control input-control"
+      id="correo-electronico"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      required
+    />
+  </div>
 
-            <div className="mb-3">
-              <label htmlFor="clave" className="form-label">Contraseña</label>
-              <input
-                type="password"
-                className="form-control input-control"
-                id="clave"
-                value={contrasena}
-                onChange={(e) => setContrasena(e.target.value)}
-                required
-              />
-            </div>
+  <div className="mb-3">
+    <label htmlFor="clave" className="form-label">Contraseña</label>
+    <input
+      type="password"
+      className="form-control input-control"
+      id="clave"
+      value={contrasena}
+      onChange={(e) => setContrasena(e.target.value)}
+      required
+    />
+  </div>
 
-            <button type="submit" className="btn btn-primary w-100">Iniciar sesión</button>
-          </form>
+  <button type="submit" className="btn btn-primary w-100">Iniciar sesión</button>
+</form>
+
 
           <p className="mt-3 text-white text-center">
             ¿No tienes cuenta? <Link to="/register" className="text-white">Regístrate</Link>

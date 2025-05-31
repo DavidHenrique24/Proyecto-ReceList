@@ -111,19 +111,6 @@
     animation: slideInFromTop 1s ease-out forwards;
   }
   
-  .modal-backdrop.fade.show {
-    animation: fadeBackdrop 1s ease-in-out forwards;
-  }
-  
-  @keyframes fadeBackdrop {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 0.5;
-    }
-  }
-  
 
   .header-icons i {
     transition: transform 0.3s ease, color 0.3s ease;

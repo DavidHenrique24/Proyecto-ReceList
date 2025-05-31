@@ -70,7 +70,7 @@ const Register = () => {
 
   // Si redirigir es true, navega al inicio de sesión
   if (redirigir) {
-    return <Navigate to="/login" />;  // Aquí se redirige a la página de inicio de sesión
+    return <Navigate to="/login" />;  
   }
 
   return (

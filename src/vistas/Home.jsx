@@ -31,10 +31,8 @@ const Home = () => {
     const { data } = await supabase
       .from("usuarios")      
       .select("id, nombre, avatar, created_at")
-      .order("created_at", { ascending: false })
+      .order("created_at", { ascending: false }) 
       .limit(3);
-    
-    
       setUltimosUsuarios(data);
     
   };
@@ -43,21 +41,20 @@ const Home = () => {
 }, []);
 
 
-  // Efecto para cargar las 3 últimas recetas
+
   useEffect(() => {
     const fetchUltimasRecetas = async () => {
       const { data } = await supabase
         .from("recetas")
         .select("*")
-        .order("created_at", { ascending: false })
+        .order("created_at", { ascending: false }) //Ascendente para mostrar los últimos
         .limit(3); //Para poner limite de Recetas mostradas
         setUltimasRecetas(data);
     };
 
-    if (user) {
       fetchUltimasRecetas();
-    }
-  }, [user]);
+    
+  });
 
   // Vista cuando hay usuario logueado
   if (user) {
@@ -103,7 +100,8 @@ const Home = () => {
                     <h5 className="card-title">{receta.titulo}</h5>
                     <p className="text-muted">
                       <small>
-                        {new Date(receta.created_at).toLocaleDateString()}
+                        {/* sirve para formatear la fecha en un formato mas bonito */}
+                        {new Date(receta.created_at).toLocaleDateString()} 
                       </small>
                     </p>
                     <p className="card-text">

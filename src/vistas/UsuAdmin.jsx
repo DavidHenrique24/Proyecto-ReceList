@@ -2,21 +2,36 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import supabase from '../utils/supabase'
 
+
 const UsuAdmin = () => {
+  // Estado para almacenar los usuarios 
   const [usuarios, setUsuarios] = useState([])
+  // Estado para guardar el ID del usuario actual (logueado)
+  const [usuarioActual, setusuarioActual] = useState(null)
+
 
   useEffect(() => {
     const fetchUsuarios = async () => {
-      const { data  } = await supabase
+      // Obtenemos el usuario actual autenticado
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      setusuarioActual(user.id)
+
+      const { data } = await supabase
         .from('usuarios')
         .select('*')
         .order('created_at')
-        setUsuarios(data)
+
+      if (data) {
+        const filtrados = data.filter(u => u.user_id !== user.id)
+        setUsuarios(filtrados)
+      }
     }
 
     fetchUsuarios()
   }, [])
 
+  // Actualiza el estado local cuando se edita algún campo de un usuario
   const manejarCambio = (indice, campo, valor) => {
     setUsuarios(prev => {
       const copia = [...prev]
@@ -25,6 +40,7 @@ const UsuAdmin = () => {
     })
   }
 
+  // Envía los cambios de un usuario a la base de datos
   const actualizarUsuario = async (usuario) => {
     const { id, ...campos } = usuario
 
@@ -40,8 +56,10 @@ const UsuAdmin = () => {
     }
   }
 
+  // Borra un usuario de la base de datos tras confirmación
   const borrarUsuario = async (id) => {
-      if (!window.confirm('¿Estás seguro de que quieres eliminar esta receta?')) return;
+    if (!window.confirm('¿Estás seguro de que quieres eliminar este usuario?')) return
+
     const { error } = await supabase
       .from('usuarios')
       .delete()
@@ -55,32 +73,29 @@ const UsuAdmin = () => {
     }
   }
 
+
   return (
     <main className='d-flex flex-column min-vh-100'>
       <div className="container mt-5 px-1">
         <h1 className="mt-5">Panel de administración de Usuarios</h1>
 
-        <div className="row mt-5">
-          <div className="col-12">
-            <ul className="nav nav-tabs">
-              <li className="nav-item w-50">
-                <Link className="nav-link" to="/projectAdmin">Recetas</Link>
-              </li>
-              <li className="nav-item w-50">
-                <Link className="nav-link active" to="/usuAdmin">Usuarios</Link>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <ul className="nav nav-tabs mt-5">
+          <li className="nav-item w-50">
+            <Link className="nav-link" to="/projectAdmin">Recetas</Link>
+          </li>
+          <li className="nav-item w-50">
+            <Link className="nav-link active" to="/usuAdmin">Usuarios</Link>
+          </li>
+        </ul>
+
 
         <div className="border border-top-0 p-3">
-          <div className="col-12" style={{ overflowX: 'auto' }}>
+          <div style={{ overflowX: 'auto' }}>
             <table className="table table-hover align-middle mt-3" style={{ minWidth: '1200px' }}>
               <thead>
                 <tr>
                   <th>Imagen</th>
                   <th>Nombre</th>
-          
                   <th>Rol</th>
                   <th>Acciones</th>
                 </tr>
@@ -88,6 +103,7 @@ const UsuAdmin = () => {
               <tbody>
                 {usuarios.map((usuario, indice) => (
                   <tr key={usuario.id}>
+                
                     <td style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                       <img
                         src={usuario.avatar || "https://via.placeholder.com/70"}
@@ -103,6 +119,8 @@ const UsuAdmin = () => {
                         style={{ maxWidth: '300px' }}
                       />
                     </td>
+
+      
                     <td>
                       <input
                         type="text"
@@ -111,7 +129,8 @@ const UsuAdmin = () => {
                         onChange={(e) => manejarCambio(indice, 'nombre', e.target.value)}
                       />
                     </td>
-                 
+
+
                     <td>
                       <select
                         className="form-control form-control-sm"
@@ -123,13 +142,16 @@ const UsuAdmin = () => {
                         <option value="chef">chef</option>
                       </select>
                     </td>
+
+       
                     <td>
-                      <button className="btn btn-sm btn-success" onClick={() => actualizarUsuario(usuario)}>Actualizar</button>
+                      <button className="btn btn-sm btn-success" onClick={() => actualizarUsuario(usuario)}>
+                        Actualizar
+                      </button>
                       <i
                         className="btn btn-sm btn-outline-danger bi bi-trash3 ms-2"
                         onClick={() => borrarUsuario(usuario.id)}
                         role="button"
-                        
                       ></i>
                     </td>
                   </tr>

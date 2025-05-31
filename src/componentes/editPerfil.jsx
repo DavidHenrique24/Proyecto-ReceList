@@ -9,8 +9,7 @@ const EditPerfil = ({ showModal, setShowModal }) => {
     nombre: '',
     avatar: '',
     email: '',
-    pass: '',
-    rol: '' // Añadido el campo rol
+    rol: ''
   });
 
   useEffect(() => {
@@ -22,7 +21,7 @@ const EditPerfil = ({ showModal, setShowModal }) => {
 
         const { data } = await supabase
           .from('usuarios')
-          .select('nombre, avatar, rol') // Seleccionamos también el rol
+          .select('nombre, avatar, rol')
           .eq('user_id', user.id)
           .single();
 
@@ -77,14 +76,12 @@ const EditPerfil = ({ showModal, setShowModal }) => {
     if (!resultado.error) {
       alert('Perfil actualizado correctamente');
 
-      // Recuperamos los datos actualizados con el rol
       const { data: nuevoPerfil } = await supabase
         .from('usuarios')
         .select('nombre, avatar, rol')
         .eq('user_id', user.id)
         .single();
 
-      // Actualizamos el usuario global
       setUser({
         ...user,
         nombre: nuevoPerfil.nombre,
@@ -101,7 +98,7 @@ const EditPerfil = ({ showModal, setShowModal }) => {
       {showModal && (
         <>
           <div className="modal-backdrop fade show"></div>
-          <div className="modal fade show d-block slide-in-modal" tabIndex="-1">
+          <div className="modal fade show d-block slide-in-modal">
             <form>
               <div className="modal-dialog modal-lg">
                 <div className="modal-content">
@@ -136,10 +133,6 @@ const EditPerfil = ({ showModal, setShowModal }) => {
                             <div>
                               <label htmlFor="email" className="form-label">Email</label>
                               <input id="email" type="email" className="form-control" value={perfil.email} disabled />
-                            </div>
-                            <div>
-                              <label htmlFor="pass" className="form-label">Contraseña</label>
-                              <input id="pass" type="password" className="form-control" value={perfil.pass} onChange={handleChange} placeholder="Nueva contraseña" />
                             </div>
                             <div>
                               <label className="form-label">Rol</label>
