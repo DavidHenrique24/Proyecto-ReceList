@@ -60,8 +60,6 @@ const Home = () => {
   if (user) {
     return (
       <main>
-    
-    
  <section
   className="text-white d-flex align-items-center justify-content-center text-center p-5"
   style={{
@@ -79,9 +77,6 @@ const Home = () => {
     </Link>
   </div>
 </section>
-
-
-
         <section className="p-5 my-5">
           <h2 className="mb-5 text-center">Últimas recetas</h2>
           <div className="row">

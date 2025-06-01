@@ -170,7 +170,7 @@ const ListRece = () => {
                   <div className="card-footer d-flex justify-content-between align-items-center">
                     <br />
                     {/* Si el usuario actual es el autor o un admin, puede editar y borrar */}
-{usuario && (receta.user_id === usuario.id || usuario.role === "admin") && (
+{usuario && (receta.user_id === usuario.id ) && (
   <div className="d-flex gap-1">
     <Link to={`/editRece/${receta.id}`}>
       <button className="btn btn-sm icono">
