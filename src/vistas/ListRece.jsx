@@ -39,9 +39,9 @@ const ListRece = () => {
 
   useEffect(() => {
     const recetasFiltradas =
-      filtroActivo === "mias" && usuario
-        ? recetas.filter((receta) => receta.user_id === usuario.id)
-        : recetas;
+      filtroActivo === "mias" && usuario 
+        ? recetas.filter((receta) => receta.user_id === usuario.id) // Filtra solo las recetas del usuario autenticado
+        : recetas; // Si no hay filtro activo, muestra todas las recetas
 
     // Si no hay nada en el buscador, muestra todas las recetas filtradas
     if (searchTerm.trim() === "") {
@@ -95,8 +95,8 @@ const ListRece = () => {
       recetas.some((receta) => receta.user_id === usuario.id)) && (
       <li className="nav-item w-50">
         <button
-          className={`nav-link ${filtroActivo === "mias" ? "active" : ""}`}
-          onClick={() => setFiltroActivo("mias")}
+          className={`nav-link ${filtroActivo === "mias" ? "active" : ""}`} // Cambia el estado del filtro a "mias"
+          onClick={() => setFiltroActivo("mias")} // Cambia el estado del filtro a "mias"
         >
           Mis Recetas
         </button>
@@ -152,7 +152,7 @@ const ListRece = () => {
                   {/* Imagen de la receta con link al detalle */}
                   <Link to={`/receDetalle/${receta.id}`}>
                     <img
-                       src={receta.portada || "/imagenesProject/fotoDefault.jpg"}
+                       src={receta.portada }
                       className="card-img-top"
                       alt=""
                       style={{ height: "300px", objectFit: "cover" }}
@@ -161,7 +161,7 @@ const ListRece = () => {
     
                   <div className="card-body">
                     <h5 className="card-title">{receta.titulo}</h5>
-                    <p className="card-text">{receta.descripcion}</p>
+                    <p className="card-text">{receta.descripcion.slice(0, 50)}</p>
                     <p className="text-muted">
                       <small>{new Date(receta.created_at).toLocaleDateString()}</small>
                     </p>
@@ -193,7 +193,7 @@ const ListRece = () => {
           ) : (
             // Mensaje si no se encuentran recetas
             <div className="text-center" style={{ marginBottom: "500px" }}>
-              <p>No se encontraron recetas.</p>
+              <p>No se encontraron/Cargaron recetas.</p>
             </div>
           )}
         </div>
