@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import supabase from "../utils/supabase";
 import Comentarios from '../componentes/comentarios.jsx';
 
@@ -13,6 +13,7 @@ const ReceDetalle = () => {
 
   // Obtiene el parámetro `id` de la URL (la id de la receta)
   const { id } = useParams();
+  const navigate = useNavigate(); // Hook para redireccionar
 
   // useEffect para obtener el usuario autenticado al cargar el componente
   useEffect(() => {
@@ -51,6 +52,20 @@ const ReceDetalle = () => {
     obtenerReceta();
   }, [id]);
 
+  // Función para eliminar la receta
+  const eliminarReceta = async () => {
+    if (!window.confirm("¿Estás seguro de que deseas eliminar esta receta?")) return;
+    const { error } = await supabase
+      .from("recetas")
+      .delete()
+      .eq("id", id);
+    if (error) {
+      alert("Error al eliminar la receta: " + error.message);
+    } else {
+      navigate("/listRece");
+    }
+  };
+
   // Mientras no se haya cargado la receta, muestra mensaje
   if (!receta) return <p className="text-center" style={{ marginBottom: "1800px" }}></p>;
 
@@ -73,7 +88,7 @@ const ReceDetalle = () => {
                   <i className="bi bi-pencil"></i>
                 </button>
               </Link>
-              <button className="btn btn-sm ms-2 iconoRojo">
+              <button className="btn btn-sm ms-2 iconoRojo" onClick={eliminarReceta}>
                 <i className="bi bi-trash"></i>
               </button>
             </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import supabase from "../utils/supabase";
 
 const ListRece = () => {
@@ -12,6 +12,7 @@ const ListRece = () => {
   const [filtroActivo, setFiltroActivo] = useState("todas");
   // Estado para guardar el usuario autenticado
   const [usuario, setUsuario] = useState(null);
+  const navigate = useNavigate();
 
   // useEffect que se ejecuta al montar el componente
   useEffect(() => {
@@ -57,17 +58,21 @@ const ListRece = () => {
 
   // Función para eliminar una receta
   const deleteReceta = async (id) => {
-    const { error } = await supabase.from("recetas").delete().eq("id", id);
-
-    // Muestra error en consola si ocurre
+    if (!window.confirm("¿Estás seguro de que deseas eliminar esta receta?")) return;
+    // Elimina visualmente la receta antes de llamar a la API
+    setRecetas((prev) => prev.filter((receta) => receta.id !== id));
+    const { error } = await supabase
+      .from("recetas")
+      .delete()
+      .eq("id", id);
     if (error) {
-      console.error("Error al eliminar receta:", error.message);
-    } else {
-      // Si se elimina correctamente, actualiza la lista sin la receta eliminada
-      const nuevasRecetas = recetas.filter((receta) => receta.id !== id);
-      setRecetas(nuevasRecetas);
+      alert("Error al eliminar la receta: " + error.message);
+      // Si hay error, vuelve a agregar la receta eliminada
+      const { data } = await supabase.from("recetas").select("*");
+      setRecetas(data);
     }
   };
+
 
 
 

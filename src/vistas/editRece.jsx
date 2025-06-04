@@ -160,18 +160,7 @@ const EditRece = () => {
               required
             ></textarea>
 
-            {/* Fecha */}
-            <label className="form-label mt-2" htmlFor="created_at">
-              <strong>Fecha de Creación:</strong>
-            </label>
-            <input
-              id="created_at"
-              type="date"
-              className="form-control"
-              value={receta.created_at?.split("T")[0]}
-              onChange={handleChange}
-              required
-            />
+        
 
             {/* Botones */}
             <button type="submit" className="btn btn-success mt-3">

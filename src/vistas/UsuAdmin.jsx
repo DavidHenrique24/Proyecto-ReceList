@@ -137,7 +137,7 @@ const UsuAdmin = () => {
                         value={usuario.rol}
                         onChange={(e) => manejarCambio(indice, 'rol', e.target.value)}
                       >
-                        <option value="Admin">admin</option>
+                        <option value="admin">admin</option>
                         <option value="user">user</option>
                         <option value="chef">chef</option>
                       </select>
